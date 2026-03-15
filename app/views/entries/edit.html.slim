@@ -1,0 +1,7 @@
+div[data-controller="blueBackground"]
+  .bg-white.px-2.pt-1
+
+    == render partial: 'form', locals:{header:'Editing Entry'}
+    / div.m-3 = @entry.inspect
+    / = @entry.splits.each do |idx|
+    /   div.m-3 = idx.inspect

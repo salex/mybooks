@@ -1,0 +1,56 @@
+div[data-controller="blueBackground"]
+div.w-full.bg-white.p-2
+  p[ style="color: green"] = notice
+
+  h1.font-bold.text-2xl Bank transactions
+  = link_to link_to icon('fas fa-plus-square', "New Bank Transaction"), new_bank_transaction_path,class:"btn-primary"
+  / = link_to link_to icon('fas fa-plus-square', "Import New Bank Transaction"), import_bank_transactions_path,class:"btn-link"
+
+  hr.border-1.border-blue-500.my-1
+
+  #-tablebank_transactions
+  table.classic.w-full
+    tr
+      td Book
+      td Split Id
+      td Date
+      td Category
+      td Description
+      td Amount
+      td Pennies
+      td Actions
+
+  div
+    - @bank_transactions.each do |bt|
+      span.m-2 = bt
+    / table.classic.w-full
+    /   tr
+    /     td Book
+    /     td Split Id
+    /     td Date
+    /     td Category
+    /     td Description
+    /     td Amount
+    /     td Pennies
+    /     td Actions
+
+    /   - @bank_transactions.each do |bt|
+    /     tr
+    /       td = bt.book_id
+    /       td = bt.split_id
+    /       td = bt.post_date
+    /       td = bt.category
+    /       td = bt.description
+    /       td = bt.amount
+    /       td = bt.pennies
+    /       td.flex
+          
+    /         = link_to icon('fas fa-eye',""), bank_transaction_path(bt.id),class:"icon bg-green-600"
+    /         = link_to icon('fas fa-edit',""),  edit_bank_transaction_path(bt.id),class:"icon bg-blue-600"
+    /         / = button_to icon('fas fa-trash',""), @bank_transaction_path(bt.id), method: :delete, form:{data: { turbo_confirm: 'Are you sure?', turbo_method:'delete' }}, class:"icon bg-red-700 text-white"
+
+    /         / = button_to icon('fas fa-trash',""), @bank_transaction_path(bt.id), method: :delete, form:{data: { turbo_confirm: 'Are you sure?', turbo_method:'delete' }}, class:"icon bg-red-700 text-white"
+
+
+  hr.border-1.border-blue-500.my-1
+

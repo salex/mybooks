@@ -1,0 +1,36 @@
+div id="#{dom_id bank_transaction}"
+  p
+    strong.w-40.inline-block.text-right Client:
+    =< bank_transaction.client_id
+  p
+    strong.w-40.inline-block.text-right Book:
+    =< bank_transaction.book_id
+  p
+    strong.w-40.inline-block.text-right Split:
+    =< bank_transaction.split_id
+  p
+    strong.w-40.inline-block.text-right Post date:
+    =< bank_transaction.post_date
+  p
+    strong.w-40.inline-block.text-right Category:
+    =< bank_transaction.category
+  p
+    strong.w-40.inline-block.text-right Description:
+    =< bank_transaction.description
+  p
+    strong.w-40.inline-block.text-right Amount:
+    =< bank_transaction.amount
+  p
+    strong.w-40.inline-block.text-right Check:
+    =< bank_transaction.check
+  p
+    strong.w-40.inline-block.text-right Pennies:
+    =< (bank_transaction.amount * 100).round
+  p
+    strong.w-40.inline-block.text-right Date Created:
+    =< bank_transaction.created_at
+  p
+    strong.w-40.inline-block.text-right Date Created:
+    =< bank_transaction.updated_at
+
+

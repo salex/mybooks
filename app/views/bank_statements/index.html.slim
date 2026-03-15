@@ -1,0 +1,42 @@
+div[data-controller="blueBackground"]
+div.w-full.bg-white.p-2
+  p style="color: green" = notice
+
+  h1.font-bold.text-2xl Bank Statements
+  = link_to link_to icon('fas fa-plus-square', "New Bank Statement"), new_bank_statement_path,class:"btn-primary"
+  = link_to link_to icon('fas fa-plus-square', "Import New Bank Transaction"), import_bank_transactions_path,class:"btn-link"
+
+  hr.border-1.border-blue-500.my-1
+  div.font-bold.m-4
+    span = "The Bank statements reconcile process has changed. Bank statements have many bank_transactions but the are not initially linked to the statement. " 
+    span = "A check my be outstanding for many months if not cashed.  The linking procedure has changed to look for Splits that match the amount of the bank transaction."
+  #bank_statements
+    table.classic.w-full
+      header
+        tr
+          th Client
+          th Book
+          th Statement Date
+          th Balance Begin
+          th Balance End
+          /th Summary
+          / th Has Transactions
+          th Actions
+
+      body
+        - @bank_statements.each do |bs|
+          tr
+            td = Current.client.name
+            td = Current.book.name
+            td = bs.statement_date
+            td = bs.beginning_balance
+            td = bs.ending_balance
+            /td = bs.summary
+
+            td 
+              = link_to icon('fas fa-eye',"Show"), bank_statement_path(bs),class:"icon bg-green-600 w-18"
+              = link_to icon('fas fa-edit',"Edit"),  edit_bank_statement_path(bs),class:"icon bg-blue-600 w-18"
+
+              / = link_to icon('fas fa-eye',"Show"), bank_statement_path(bs),class:"btn-sm-green"
+              / = link_to icon('fas fa-edit',"Edit"),  edit_bank_statement_path(bs),class:"btn-sm-green"
+

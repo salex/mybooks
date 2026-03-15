@@ -1,0 +1,6 @@
+div.w-full
+  h1.font-bold.text-2xl New Client
+  div = link_to icon('fas fa-list',"Cancel - List Clients"), clients_path, class:"btn-sm-green"
+  hr.border-1.border-blue-500.my-1
+  == render "form", client: @client
+

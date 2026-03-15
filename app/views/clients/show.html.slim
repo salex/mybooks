@@ -1,0 +1,11 @@
+div.w-full
+  p style="color: green" = notice
+  h1.font-bold.text-2xl Showing Client
+
+  div.flex.gap-8
+    => link_to icon('fas fa-edit',"Edit Client"), edit_client_path(@client), class:"btn-sm-green"
+    =< link_to icon('fas fa-list',"List Clients"), clients_path, class:"btn-sm-green"
+    = button_to icon('fas fa-trash',"Destroy Client"), @client, method: :delete, form:{data: { turbo_confirm: 'Are you sure?', turbo_method:'delete' }}, class:"btn-sm bg-red-700 text-white"
+
+  hr.border-1.border-blue-500.my-1
+  == render @client

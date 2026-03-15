@@ -1,0 +1,38 @@
+= form_with(model: @bank_transaction) do |form|
+  - if @bank_transaction.errors.any?
+    div style="color: red"
+      h2 = "#{pluralize(@bank_transaction.errors.count, "error")} prohibited this bank_transaction from being saved:"
+      ul
+        - @bank_transaction.errors.each do |error|
+          li = error.full_message
+
+  div
+    = form.label :client_id, class: "inline-block w-28 font-bold text-right"
+    = form.text_field :client_id, class:'border-b-1 m-2'
+
+  div
+    = form.label :book_id, class: "inline-block w-28 font-bold text-right"
+    = form.text_field :book_id, class:'border-b-1 m-2'
+
+  div
+    = form.label :split_id, class: "inline-block w-28 font-bold text-right"
+    = form.text_field :split_id, class:'border-b-1 m-2'
+
+  div
+    = form.label :post_date, class: "inline-block w-28 font-bold text-right"
+    = form.date_field :post_date, class:'border-b-1 m-2'
+
+  div
+    = form.label :category, class: "inline-block w-28 font-bold text-right"
+    = form.text_field :category, class:'border-b-1 m-2'
+
+  div
+    = form.label :description, class: "inline-block w-28 font-bold text-right"
+    = form.text_field :description, class:'border-b-1 m-2'
+
+  div
+    = form.label :amount, class: "inline-block w-28 font-bold text-right"
+    = form.text_field :amount, class:'border-b-1 m-2'
+
+  div[class="btn-submit"]
+    = form.submit

@@ -1,0 +1,60 @@
+div.font-bold
+  = tag.div(flash[:alert], style: "color:red") if flash[:alert]
+  = tag.div(flash[:notice], style: "color:green") if flash[:notice]
+div
+  = select_tag "credit_card", options_for_select([ "VISA", "MasterCard" ], "MasterCard")
+  / = select_tag "Transfers", options_for_select(Current.book.acct_sel_opt, 0)
+  .w3-dropdown-hover.w-72.gbtn  
+    button.w3-button.px-3
+     | Links&nbsp;&nbsp;&nbsp;
+     i.fa.fa-caret-down
+    .w3-dropdown-content.w3-card-4.w-72
+      = link_to "Bank Transactions", bank_transactions_path, class:"block gbtn " 
+      = link_to "Bank Statements", bank_statements_path, class:"block gbtn " 
+
+
+
+/ .space
+/   /# Input Version
+/   div.w-1/6
+/     /h4.font-medium.text-sm.mb-3 Input Version
+/     .relative.w-full.max-w-sm[data-controller="date-picker" data-date-picker-show-today-button-value="true" data-date-picker-show-clear-button-value="true"]
+/       input.block.font-bold.w-full.rounded-lg.border-0.px-3.py-2.text-neutral-900.shadow-sm.ring-1.ring-inset.ring-neutral-300.placeholder:text-neutral-500.focus:ring-2.focus:ring-neutral-600.outline-hidden.leading-6.dark:bg-neutral-700.dark:ring-neutral-600.dark:placeholder-neutral-300.dark:text-white.dark:focus:ring-neutral-500.text-base.sm:text-sm[readonly="readonly" data-date-picker-target="input" placeholder="Select date..."]
+/       .pointer-events-none.absolute.inset-y-0.right-3.flex.items-center.justify-center.opacity-80
+/         svg.size-4[xmlns="http://www.w3.org/2000/svg" viewbox="0 0 18 18"]
+/           g[fill="currentColor"]
+/             path[d="M5.75,3.5c-.414,0-.75-.336-.75-.75V.75c0-.414,.336-.75,.75-.75s.75,.336,.75,.75V2.75c0,.414-.336,.75-.75,.75Z"]
+/             path[d="M12.25,3.5c-.414,0-.75-.336-.75-.75V.75c0-.414,.336-.75,.75-.75s.75,.336,.75,.75V2.75c0,.414-.336,.75-.75,.75Z"]
+/             path[d="M13.75,2H4.25c-1.517,0-2.75,1.233-2.75,2.75V13.25c0,1.517,1.233,2.75,2.75,2.75H13.75c1.517,0,2.75-1.233,2.75-2.75V4.75c0-1.517-1.233-2.75-2.75-2.75Zm0,12.5H4.25c-.689,0-1.25-.561-1.25-1.25V7H15v6.25c0,.689-.561,1.25-1.25,1.25Z"]
+
+
+div
+  - curr  = Session.all
+  - if Current.session.present?
+    - curr.each do |s|
+      - if s.id == Current.session.id 
+        div.font-bold Current Session(s)
+        div.ml-4.font-bold = s.inspect
+        div = session.keys
+        / - session['uname'] = "Steve Alex"
+        / div = session.inspect
+      - else
+        div.font-bold Other
+        div.ml-2 = s.inspect
+
+
+  div.font-bold Current Book
+  div.ml-4.font-bold = Current.book.name
+  / div.ml-6 = Current.book.settings.keys
+  / div.ml-6 = Current.book.settings['msg']
+
+  div.font-bold Current Client
+  div.ml-4.font-bold = Current.client.inspect
+
+  div.font-bold Current User
+  div.ml-4.font-bold = Current.user.inspect
+
+
+  / div current client
+  / div = Current.client.inspect
+/# Basic Date Picker

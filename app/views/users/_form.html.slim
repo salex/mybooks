@@ -1,0 +1,42 @@
+= form_with(model: @user) do |form|
+  - if @user.errors.any?
+    div style="color: red"
+      h2 = "#{pluralize(@user.errors.count, "error")} prohibited this user from being saved:"
+      ul
+        - @user.errors.each do |error|
+          li = error.full_message
+  div = "Client ID:#{@user.client_id}"
+
+  div
+    = form.label :client_id, class: "inline-block w-28 font-bold text-right"
+    = form.text_field :client_id, class:'border-b-1 m-2'
+  div
+    = form.label :email, class: "inline-block w-28 font-bold text-right"
+    = form.text_field :email_address, class:'border-b-1 m-2'
+
+  div
+    = form.label :username, class: "inline-block w-28 font-bold text-right"
+    = form.text_field :username, class:'border-b-1 m-2'
+
+  div
+    = form.label :roles, class: "inline-block w-28 font-bold text-right"
+    = form.text_field :roles, class:'border-b-1 m-2'
+
+  div
+    = form.label :default_book, class: "inline-block w-28 font-bold text-right"
+    = form.number_field :default_book, class:'border-b-1 m-2'
+  div
+    = form.label :password, class: "font-bold text-lg"
+    = form.password_field :password, class: "p-1 border block"
+
+  div
+    = form.label :password_confirmation, class: "font-bold text-lg"
+    = form.password_field :password_confirmation, class: "p-1 border block"
+
+
+  / div
+  /   = form.label :password_digest, class: "inline-block w-28 font-bold text-right"
+  /   = form.text_field :password_digest, class:'border-b-1 m-2'
+
+  div[class="btn-submit"]
+    = form.submit

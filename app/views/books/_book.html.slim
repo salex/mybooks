@@ -1,0 +1,16 @@
+div id="#{dom_id book}"
+  p
+    strong.w-40.inline-block.text-right Client:
+    =< book.client_id
+  p
+    strong.w-40.inline-block.text-right Name:
+    =< book.name
+  p
+    strong.w-40.inline-block.text-right Date from:
+    =< book.date_from
+  p
+    strong.w-40.inline-block.text-right Date to:
+    =< book.date_to
+  p
+    strong.w-40.inline-block.text-right Settings:
+    / =< book.settings.keys

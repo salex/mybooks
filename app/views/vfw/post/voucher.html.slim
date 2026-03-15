@@ -1,0 +1,20 @@
+.fs8.print:text-print
+  .font-lg.font-bold VFW Monthly Voucher
+
+  p.italic.fs8 We have reviewed that attached Post ledgers, Bank Statements, Bills and Receipts are in accordance to Post, Departments and National By-Laws requirements. We certify those requirements have been met to the best of our knowledge and belief.
+  .grid.grid-cols-3.mt-8.gap-16
+    .col-span-1
+      div.border.border-black.mt-4
+      p.fs8 Commander
+    .col-span-1
+      div.border.border-black.mt-4
+      p.fs8 Quartermaster
+    
+    .col-span-1
+      div.border.border-black.mt-4
+      p.fs8 Date
+
+  hr.border.m-1
+  = render template:"reports/summarypl"
+  hr.border.m-1
+  div.fs8 = render partial: 'ledger', locals:{from:@from,to:@to,account:@account}

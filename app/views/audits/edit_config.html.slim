@@ -1,0 +1,39 @@
+div.w-full
+  h1.font-bold.text-2xl Editing Audit Config
+  div.flex.gap-8
+    = link_to icon('fas fa-eye',"Show Audit"), audit_path(@audit), class:"btn-sm-green"
+    = link_to icon('fas fa-list',"List Audits"), 
+      audits_path, class:"btn-sm-green"
+    = button_to icon('fas fa-trash',"Destroy Audit"), @audit, method: :delete, form:{data: { turbo_confirm: 'Are you sure?', turbo_method:'delete' }}, class:"btn-sm bg-red-700 text-white"
+
+  hr.border-1.border-blue-500.my-1
+  div
+    h4.strong 
+      |Editing Audit Report Configuration 
+      span.inheader
+
+    div.flex
+      div
+        / = form_with(model: @audit, url: update_config_audit_path(@audit),method: 'patch', class:" p-2") do |form|
+
+        = form_with(model: @audit, url:update_config_audit_path) do |form|
+
+        
+          .box= submit_tag "Update Configuration",class:"#{btnSubmit}"
+          / .box= text_field_tag :qtr_date, @report.range.first
+          / - puts "SETTINGS #{@audit.settings}"
+          .box = text_area_tag :settings,@audit.settings,rows:25,cols:80,class:'scroll-auto border-1 p-2'
+      div.ml-6
+        .callout.alert.z1
+          button[class="#{btnWarn}"]=> link_to 'Cancel/Show', vfw_post_index_path
+
+          div.font-bold.text-red-500 Cancel if you don't know what you are doing!
+          div Why instructions
+          ul#selector
+            li The text area to the left contains contents of a  YAML file.
+            li YAML is structured text
+            li Rows can be indented with spaces, which defines a hierarchy
+            li Each row can be consider a defined variable
+            li Most variables are strings, numbers or dates
+            li You can only change variables, changing any other areas will most likely generate an error
+            li 95% of the lines are seldom changed. You normally only have to change :checking items :balance and :outstaning each quarter!

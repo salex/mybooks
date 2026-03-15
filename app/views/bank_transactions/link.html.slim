@@ -1,0 +1,68 @@
+div[data-controller="blueBackground"]
+div.w-full.bg-white.p-2
+  p style="color: green" = notice
+  h1.font-bold.text-2xl Link Bank Transaction to Entry/Split
+
+  div.flex.gap-8
+    => link_to icon('fas fa-edit',"Edit Bank Transaction"), edit_bank_transaction_path(@bank_transaction), class:"btn-sm-green"
+    =< link_to icon('fas fa-list',"Cancel List Bank Transactions"), bank_transactions_path, class:"btn-cancel"
+    = button_to icon('fas fa-trash',"Destroy Bank Transaction"), @bank_transaction, method: :delete, form:{data: { turbo_confirm: 'Are you sure?', turbo_method:'delete' }}, class:"btn-warn"
+
+  hr.border-1.border-blue-500.my-1
+  div.flex.gap-10
+
+    div.w-4/12
+      div.font-bold Bank Transaction
+      div == render @bank_transaction
+    div.w-8/12
+      - if @splits.blank?
+        div.font-bold There is no matching split. Below are your options:
+        ul
+          li You can create the missing Entry on your own - especially if this a re-occurring entry that you can duplicate.
+          li Select the Checking Account you want to assign to a new Entry to and whether you are debiting or crediting that account. Then click the New Entry button.
+
+        = form_with url: :new_entry_entry, id:@bank_statement,data:{turbo: false} ,method: :patch do |f|
+          table.classic
+            tr
+              th.bg-green-200.text-right Checking Acct
+              td = f.select(:checking,[ "General", "Relief", "Reserve"],class:'')
+            / tr the sign +- of the amount determins cr/db
+            /   th.bg-green-200.text-right Credit/Debit
+            /   td = f.select(:dbcr,[ "Debit", "Credit"],class:'')
+            tr
+              th.bg-green-200.text-right Memo
+              td = f.text_field(:memo,value:@bank_transaction.category,class:'bg-white border-1 p-1')
+            tr
+              th.bg-green-200.text-right Amount
+              td = f.number_field(:amount,value:@bank_transaction.amount,class:'bg-white border-1 p-1')
+
+          div[class="btn-submit mt-2"]
+            = f.submit "New Entry"
+
+      - else
+        div.font-bold Matching Splits
+        table.classic.w-full
+          thead
+            tr
+              th Id
+              th Updated
+              th Amount
+              th eDescription
+              th sDescription
+              th eCkNumb
+              / th Reconcile
+              th Link
+          tbody
+            - @splits.each do |s|
+              tr
+                td = link_to(s.id,split_path(s.id),class:"text-green-600")
+                td = s.updated_at.to_date
+                td = s.amount
+                td = s.entry.description[0..30]+'..'
+                td = @bank_transaction.description[0..30]+'..'
+                td = s.entry.numb
+                / td = s.reconcile_date 
+                - unless s.id.blank?
+                  td = link_to icon('fas fa-link',""), set_link_bank_transaction_path(split_id:s.id),class:"icon bg-purple-600"
+                - else
+                  td

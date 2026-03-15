@@ -1,0 +1,167 @@
+/ The output html converted to a pdf with the print command and opening the page. Size can vary and is mainly controlled by the .fs7 font size, default to 75 %. if the page wants to got to two pages for some reason, change the .fs7 percent to a lower percent.
+
+.grid.grid-cols-12.gap-4.print.fs8
+  .col-span-3
+    div[class="-mt-7"] = image_tag('vfw_logo2.jpg')
+  .col-span-1
+    = content_tag(:button,'Print', class:"btn-sm-blue noprint",
+      onclick: "window.print();")
+
+  .col-span-8.fs8
+    h3.strong TRUSTEES' REPORT OF AUDIT of
+    / @audit comes in from print and then is converted to a struct by calling the helper get_audit. get audit creates a new version of @audit witch gets a array of the family summaries for the begin and end dates of the aund
+    - @audit = to_struct(get_audit(@audit))  
+    div.fs8
+      | The Books and Records of the Quartermaster and Adjutant of:  <strong><u>#{@audit[:config].post.name} #{@audit[:config][:post][:post]}</u></strong> Department of <strong><u>#{@audit[:config][:post][:department]}</u></strong> for Fiscal Quarter ending:  <strong><u>#{@audit[:range].last}</u></strong> (Fiscal Quarter    <strong><u> #{@audit[:range]}</u></strong>)
+
+  .col-span-12.border
+
+    - funds = @audit[:checking].size + 3 
+    / checking size + saving and cash
+    / there are two index numbers i and funds
+    / fund starts at size after adding the number or rows in the FUNDS table
+    table.classic.w-full.fs9
+      tr
+        th.font-bold.w-2/6 FUNDS -  Assets 
+        th.w-1/6.fs5 = "#{funds+2}. Net Balances at Beginning of Quarter"
+        th.w-1/6.fs5 = "#{funds+3}. Receipts During Quarter"
+        th.w-1/6.fs5 = "#{funds+4}. Expenditures During Quarter"
+        th.w-1/6.fs5.text-xs = "#{funds+5}. Net Balances at End of Quarter"
+      - i = 1
+      tr
+        td.font-bold = "#{i}. #{@audit[:checking].general.description}"
+        td.text-right = money(@audit[:checking].general.beginning)
+        td.text-right = money(@audit[:checking].general.debits)
+        td.text-right = money(@audit[:checking].general.credits)
+        td.text-right = money(@audit[:checking].general.ending)
+      - i = i+1
+      tr
+        td.font-bold = "#{i}. #{@audit[:checking].relief.description}"
+        td.text-right = money(@audit[:checking].relief.beginning)
+        td.text-right = money(@audit[:checking].relief.debits)
+        td.text-right = money(@audit[:checking].relief.credits)
+        td.text-right = money(@audit[:checking].relief.ending)
+      - i = i+1
+      tr
+        td.font-bold = "#{i}. #{@audit[:checking].reserve.description}"
+        td.text-right = money(@audit[:checking].reserve.beginning)
+        td.text-right = money(@audit[:checking].reserve.debits)
+        td.text-right = money(@audit[:checking].reserve.credits)
+        td.text-right = money(@audit[:checking].reserve.ending)
+      - i = i+1
+      tr
+        td.font-bold = "#{i}. #{@audit[:savings].description}"
+        td.text-right = money(@audit[:savings].beginning)
+        td.text-right = money(@audit[:savings].debits)
+        td.text-right = money(@audit[:savings].credits)
+        td.text-right = money(@audit[:savings].ending)
+      - i = i+1
+      tr
+        td.font-bold = "#{i}. #{@audit[:investments].description}"
+        td.text-right = money(@audit[:investments].beginning)
+        td.text-right = money(@audit[:investments].debits)
+        td.text-right = money(@audit[:investments].credits)
+        td.text-right = money(@audit[:investments].ending)
+
+      - i = i+1
+      tr
+        td.font-bold = "#{i}. #{@audit[:cash].description}"
+        td.text-right = money(@audit[:cash].beginning)
+        td.text-right = money(@audit[:cash].debits)
+        td.text-right = money(@audit[:cash].credits)
+        td.text-right = money(@audit[:cash].ending)
+      - i = i+1
+
+      tr.font-bold
+        td.text-right = "#{i}. Totals - #{@audit[:assets].total.description}"
+        td.text-right = money(@audit[:assets].total.beginning)
+        td.text-right = money(@audit[:assets].total.debits)
+        td.text-right = money(@audit[:assets].total.credits)
+        td
+          div.inline-block.float-left = "#{funds+6}." 
+          - i = i+1
+          div.inline-block.float-right = money(@audit[:assets].total.ending)
+  / the funds table is now displayed and will create the operations and summary tables
+  - i = i + 5
+  div.col-span-7.border.border-slate-400.px-2
+    div.font-bold.border-b-1 = "#{i}. OPERATIONS"
+    div.table.w-full.fs7
+     - rows = @audit[:config][:operations]
+     - rows.each do |r|
+       - r[1] = money(r[1],'$') if r[1].class == Integer
+       div.table-row
+         div.table-cell.hangingindent = r[0]
+         div.table-cell.text-right = r[1]
+  div.col-span-5.px-2.border.border-slate-400.fs8
+    div.font-bold.px-2.border-b-1 = "#{i+1}. RECONCILIATION OF FUND BALANCES"
+    - i = i+1
+    div.flex.flex-wrap.px-2
+      - ck_bal =  @audit[:config].checking.balance 
+      - out_bal = @audit[:config].checking.outstanding
+      - bank_bal = ck_bal
+      - act_bal = ck_bal - out_bal
+      - save_bal =  @audit[:assets].bsave
+      - cash_bal = @audit[:assets].bcash
+      - total_curr = act_bal + save_bal + cash_bal
+      - invest_bal = @audit[:assets].binvest
+      - total_bal = total_curr + invest_bal
+      - error_bal = @audit[:assets].total.ending - total_bal
+      div.w-1/2.text-right.pr-2 Checking Balance
+      div.w-1/4.text-right.pr-2 = money ck_bal
+      div.w-1/4 &nbsp;
+      div.w-1/2.text-right.pr-2 Outstanding Checks
+      div.w-1/4.text-right.pr-2 = money out_bal
+      div.w-1/4 &nbsp;
+      div.w-3/4.text-right.pr-2 Actual Balance
+      div.w-1/4.text-right.pr-2 = money( act_bal)
+      div.w-3/4.text-right.pr-2 Savings Balance
+      div.w-1/4.text-right.pr-2 = money save_bal
+      div.w-3/4.text-right.pr-2 Cash on Hand
+      div.w-1/4.text-right.pr-2 = money cash_bal
+      div.w-3/4.text-right.font-bold.pr-2 Total Current
+      div.w-1/4.text-right.font-bold.pr-2 = money total_curr
+      div.w-3/4.text-right.pr-2 Bonds and Investments 
+      div.w-1/4.text-right.pr-2 = money invest_bal
+      div.w-3/4.text-right.font-bold.pr-2 Total
+      div.w-1/4.text-right.font-bold.pr-2 = money total_bal
+ 
+      / Check for out of balance
+      - error_bal = @audit[:assets].total.ending - total_bal
+      - if error_bal != 0
+        - tot_label =  "Total Out of Balance:"
+        div.w-3/4.text-right.text-red-600.font-bold.pr-2.py-2.bg-red-200 = tot_label
+        div.w-1/4.text-right.text-red-600.font-bold.pr-2.py-2.bg-red-200 = money error_bal
+
+/ now created the footer which is just quarter master name and signatures
+div
+  .col-span-12.mt-2.fs8
+    .flex.flex-wrap.gap-8.font-bold.border-b-1 
+      div = "#{i+1}. TRUSTEEs' and COMMANDER's CERTIFICATE OF AUDIT"
+      - i = i+1
+      div = "Date: #{@audit.config.date}"
+
+  .col-span-12
+    div.fs6
+      | This is to certify that we (or qualified accountants) have audited the books and records of the Adjutant & Quartermaster of <strong><u> #{@audit[:config][:post][:post]} </u></strong> (District/County Council/Post No.) For the Fiscal Quarter ending <strong><u> #{@audit[:range].last} </u></strong> in accordance of the National By-Laws and this Report is a true and correct statement thereof to the best of our knowledge and belief. All Vouchers and checks have been examined and found to be properly approved and checks properly signed.
+.grid.grid-cols-12.gap-4.mt-1
+  .col-span-3.fs6
+    div.font-bold Post Quartermaster
+    div Name and Address 
+    div.ml-2 = @audit[:config].qm.name
+    div.ml-2 = @audit[:config].qm.address
+    div.ml-2 = @audit[:config].qm.city
+  .col-span-9
+    div.col-span-6.fs6 
+      | This is to certify that the Office of the Quartermaster is Bonded with <strong><u> #{@audit[:config].bond.name} </u></strong> in the amount of <strong><u> $#{money(@audit[:config].bond.amount)} </u></strong> until <strong><u> #{@audit[:config].bond.to} </u></strong>, and that this Audit is correctly made out to the best of my knowledge and belief.
+
+    .grid.grid-cols-12.gap-2.fs7
+      .col-span-6
+        div.mt-2.font-bold Commander's Signature
+        div.mt-4  __________________________________ Commander
+
+      .col-span-6
+        div.mt-2.font-bold Trustees Signatures
+        div.mt-4 __________________________________ Trustee
+        div.mt-4 __________________________________ Trustee
+        div.mt-4 __________________________________ Trustee
+

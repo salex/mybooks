@@ -1,0 +1,15 @@
+div.w-full
+  p style="color: green" = notice
+
+  h1.font-bold.text-2xl Entries
+  = link_to link_to icon('fas fa-plus-square', "New Entry"), new_entry_path,class:"#{btn_sm_blue}"
+  hr.border-1.border-blue-500.my-1
+
+  #entries
+    - @entries.each do |entry|
+      == render entry
+      = link_to icon('fas fa-eye',"Show Entry"), entry,class:"#{btn_sm_green}"
+      = link_to icon('fas fa-edit',"Edit Entry"),  edit_entry_path(entry),class:"#{btn_sm_green}"
+
+      hr.border-1.border-blue-500.my-1
+

@@ -1,0 +1,20 @@
+.font-bold.fs8.print:text-print
+  = "Profit & Loss For Period Covering #{@from || params[:from] ||= Date.today.beginning_of_year} to #{@to || params[:to] ||= Date.today}"
+  / - unless @deposits.present?
+  /   button.btn-link.w3-right.noprint[onclick="goBack()"] Back Page
+/ .profit-loss
+/   = profit_loss_report(@report)
+- pl_array = pl_array(@report)
+
+table.pl.fs8.print:text-print
+ - pl_array.each do |row|
+   tr[class="#{row[1].nil? ? 'font-bold' : ''}"]
+     -level = row[1].to_i - 1
+
+     - row.each_with_index do |col,idx|
+       - if idx == 0
+         td[class="p#{level}"] = col
+       - elsif idx > 1
+         td.text-right.pl-4 = col
+       -else
+         td.hidden = col

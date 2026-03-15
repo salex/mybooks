@@ -1,0 +1,12 @@
+div[data-controller="blueBackground"]
+div.w-full.bg-white.p-2
+  p style="color: green" = notice
+  h1.font-bold.text-2xl Showing Bank transaction
+
+  div.flex.gap-8
+    => link_to icon('fas fa-edit',"Edit Bank transaction"), edit_bank_transaction_path(@bank_transaction), class:"btn-sm-green"
+    =< link_to icon('fas fa-list',"Cancel List Bank transactions"), bank_transactions_path, class:"btn-cancel"
+    = button_to icon('fas fa-trash',"Destroy Bank transaction"), @bank_transaction, method: :delete, form:{data: { turbo_confirm: 'Are you sure?', turbo_method:'delete' }}, class:"btn-warn"
+
+  hr.border-1.border-blue-500.my-1
+  == render @bank_transaction

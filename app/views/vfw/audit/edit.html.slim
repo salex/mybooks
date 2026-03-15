@@ -1,0 +1,15 @@
+div
+  h4.strong 
+    |Editing Audit Report Configuration 
+    span.inheader
+
+  .grid-cols-2
+    .col-span-1
+      .callout.alert.strong.z1 
+        span 
+          | Cancel if you don't know what you are doing!
+          button[class="#{btnWarn}"]=> link_to 'Cancel/Show', vfw_post_index_path
+      = form_with(url: update_config_vfw_audit_index_path,method: 'patch')
+        .box= submit_tag "Update Configuration",class:"#{btnSubmit}"
+        .box= text_field_tag :qtr_date, @report.range.first
+        .box= text_area_tag :yaml,@vfwcashconfig,rows:30,cols:100

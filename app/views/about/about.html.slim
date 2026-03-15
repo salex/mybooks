@@ -1,0 +1,59 @@
+#about
+  .grid.grid-cols-12.gap-4.p-1
+    .col-span-10
+      h5.strong About OurBooks
+      p.my-1.5 OurBooks is a Web based double entry accounting application.
+
+      p.my-1.5 The about link buttons to the right will provide some detail on the the areas listed. This page is just an overview of the look, feel and flow of the application.
+      .grid.grid-cols-12.gap-4.p-4
+        .col-span-6
+          p.my-1.5 <strong>Buttons, Buttons, Buttons</strong> There are many, maybe too many! Almost all links use Buttons or Icons instead of an Anchors (the blue words on most web sites)
+          
+  
+          div
+            button[class="#{btnInfo} mr-2"] btnInfo
+            button[class="#{btnWarn} mr-2"] btnWarn
+            button[class="#{btnSuccess} mr-2"] btnSuccess
+            button[class="bg-red-700 text-white hover:bg-red-500 p-1"] = icon('fas fa-trash',"btnDanger")
+            / button.grey-link-button Grey Link Button
+            / button.action-button Action Button
+            / button.cancel-button Cancel Button
+        
+            form
+              span.blue-link.font-bold Blue Link
+              button[class="bg-w3red hover:text-white rounded p-3 text-xl font-bold mt-2"] Submit(off)
+              span &nbsp;
+              button[class="bg-blue-400 hover:text-white rounded p-3 text-xl font-bold mt-2"] Submit(on)
+
+          h5.strong icons
+          ul.classic.ml-1
+            li <i class="fas fa-edit"></i> - Edit
+            li <i class="fas fa-eye"></i> - Show
+            li <i class="fas fa-link"></i> - Link
+
+            li <i class="fas fa-plus-square"></i> - Add/New
+            li <i class="fa fa-copy"> </i> - Duplicate
+            li <i class="fas fa-sort"></i> - Sort
+            li <i class="fa fa-trash-alt"></i> - Destroy
+            li <i class="far fa-credit-card"></i> - Reconcile
+            li
+              i.far.fa-question-circle 
+              |&nbsp;- Tool Tip Help
+
+        .col-span-6
+          h5.strong Flow
+          ul.classic.ml-4
+            li Click Login in tile bar
+            li Click Account in title bar to list accounts
+            li Click on Account name to open a ledger
+            li Optionally select a ledger in Recent Ledgers to open ledgers
+            li Optionally - enter a partial entry description in the Entry Search field in the title bar then click the search button to display a ledger with entries starting with those words or filtered by any words.
+            li Click Edit(date) or Duplicate icon to open Split Leger for that Entry/Transaction
+            li Click Links in title bar and select reports, balances and other stuff
+
+
+    .col-span-2
+      / h5.strong OurBooks About Pages
+      = render partial:'links'
+
+         

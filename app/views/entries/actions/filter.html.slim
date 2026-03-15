@@ -1,0 +1,44 @@
+
+.w3-row-padding
+  div
+  
+    = form_with( url:'/entries/filtered/results', method: :put) do |form|
+      / ,method: :get, html: {data: { type: "html", entrySearch_target:'form' } } 
+      .grid.grid-cols-12
+        .col-span-7
+          p You can search for entries descriptions and filter search by the radio buttons options. You can also search for a Entry number or search for a Split amount (in pennies!). Entries searches will defaut to the last match. Check the  <strong>Show All</strong> check box to show all matches for basic search without options.
+        .col-span-5
+          .strong Options
+          div
+            = form.radio_button(:how, "any")
+            span.w3-margin By matching *any* word or words in the search field
+          div
+            = form.radio_button(:how, "all")
+            span.w3-margin By matching *all* words in the search field
+          div
+            = form.radio_button(:how, "match")
+            span.w3-margin By matching a phrase or parts of a description
+          div
+            = form.radio_button(:how, 'nil')
+            span.w3-margin Clear Options
+
+
+      label.strong Search Field
+      .flex.gap-8.border.p-2
+        div = form.text_field :words,class:'w-96'
+        div 
+          = form.check_box(:show_all)
+          span.font-bold &nbsp; Show All
+        div = form.submit "Search Entries", class:"#{btn_sm_green}"
+        div = form.submit "Search Entry Number", class:"#{btn_sm_green}"
+        div = form.submit "Search Split Amount", class:"#{btn_sm_green}"
+
+div[id="entries" class="mt-5"]
+  span Results
+/ <turbo-stream action="replace" target="entries">
+/   <template>
+/     <!-- Content from the rendered partial -->
+/   </template>
+/ </turbo-stream>
+
+

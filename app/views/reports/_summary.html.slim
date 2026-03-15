@@ -1,0 +1,21 @@
+table.classic.fs8.print:text-print
+  caption.font-bold = "Account Summary - From: #{@from || params[:from] || Date.today.beginning_of_year}  To: #{@to || params[:to] || Date.today}"
+  tr
+    td.font-bold Account
+    th BBegin
+    th Debits
+    th Credits
+    th P/L
+    th BEnd
+  - tree = tree_summary(@summary)
+  - lev = @summary[tree[0]][:level]
+  - tree.each do |id|
+    - acct = @summary[id]
+    - unless acct[:ending].zero?
+      tr
+        td.font-bold[class="p#{acct[:level] - lev}"]=  acct[:name]
+        td.tright = to_money acct[:beginning]
+        td.tright = to_money acct[:debits]
+        td.tright = to_money acct[:credits]
+        td.tright = to_money acct[:diff]
+        td.tright = to_money acct[:ending]

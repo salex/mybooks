@@ -1,0 +1,46 @@
+= form_with(model: @account) do |form|
+  - if @account.errors.any?
+    div style="color: red"
+      h2 = "#{pluralize(@account.errors.count, "error")} prohibited this account from being saved:"
+      ul
+        - @account.errors.each do |error|
+          li = error.full_message
+
+  div
+    = form.label :client_id, class: "inline-block w-28 font-bold text-right"
+    = form.text_field :client_id, class:'border-b-1 m-2'
+
+  div
+    = form.label :book_id, class: "inline-block w-28 font-bold text-right"
+    = form.text_field :book_id, class:'border-b-1 m-2'
+
+  div
+    = form.label :name, class: "inline-block w-28 font-bold text-right"
+    = form.text_field :name, class:'border-b-1 m-2'
+
+  div
+    = form.label :account_type, class: "inline-block w-28 font-bold text-right"
+    = form.text_field :account_type, class:'border-b-1 m-2'
+
+  div
+    = form.label :code, class: "inline-block w-28 font-bold text-right"
+    = form.text_field :code, class:'border-b-1 m-2'
+
+  div
+    = form.label :description, class: "inline-block w-28 font-bold text-right"
+    = form.text_field :description, class:'border-b-1 m-2'
+
+  div
+    = form.label :placeholder, class: "inline-block w-28 font-bold text-right"
+    = form.checkbox :placeholder, class:'border-b-1 m-2'
+
+  div
+    = form.label :parent_id, class: "inline-block w-28 font-bold text-right"
+    = form.number_field :parent_id, class:'border-b-1 m-2'
+
+  div
+    = form.label :level, class: "inline-block w-28 font-bold text-right"
+    = form.number_field :level, class:'border-b-1 m-2'
+
+  div[class="btn-submit"]
+    = form.submit

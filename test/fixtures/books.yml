@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  client: one
+  name: MyString
+  date_from: 2025-07-08
+  date_to: 2025-07-08
+  settings: MyText
+
+two:
+  client: two
+  name: MyString
+  date_from: 2025-07-08
+  date_to: 2025-07-08
+  settings: MyText

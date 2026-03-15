@@ -1,0 +1,31 @@
+div.w3-container
+
+  button.btn-link.w3-right.noprint[onclick="goBack()"] Back Page
+
+  table.classic
+    caption = "Account Summary - From: #{params[:from] || Date.today.beginning_of_year}  To: #{params[:to] || Date.today}"
+    tr
+      td.font-bold Account
+      th BBegin
+      th Debits
+      th Credits
+      th P/L
+      th EBalance
+    - tree = tree_summary(@summary)
+    - tree.each do |id|
+      - acct = @summary[id]
+      - unless acct[:ending].zero?
+        tr
+          td.font-bold[class="p#{acct[:level]}"]=  acct[:name]
+          td.tright = to_money acct[:beginning]
+          td.tright = to_money acct[:debits]
+          td.tright = to_money acct[:credits]
+          td.tright = to_money acct[:diff]
+          td.tright = to_money acct[:ending]
+
+javascript:
+  function goBack() {
+    window.history.back();
+  }
+
+

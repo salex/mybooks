@@ -1,0 +1,29 @@
+div
+  h5.strong Under Construction
+  .grid.grid-cols-3.gap-8
+    .col-span-1 
+      p VFW Reports are examples of creating custom reports for your operations. The Audit reports are nothing more than an expanded Bank Accounts balance with a checklist and checkoffs
+    .col-span-1
+      div[class="bg-yellow-200"]
+        .strong.indent VFW Trustee Audit
+        .gbtn.w-full.text-center = link_to "Audit List",audits_path 
+        / REST AND AUDITS IMPORTED
+        / .gbtn.w-full.text-center = link_to "Edit Audit Configuration",edit_audit_index_path
+        / .gbtn.w-full.text-center = link_to 'Trustee Audit PDF',pdf_vfw_audit_index_path 
+        / .gbtn.w-full.text-center = link_to 'Trustee Audit HTML',print_vfw_audit_index_path
+  .grid.grid-cols-3.mt-8.gap-8
+    .col-span-1 
+      p VFW Reports are examples of creating custom reports for your operations. The Audit reports are nothing more than an expanded Bank Accounts balance with a checklist and checkoffs
+    .col-span-1
+      div[class="bg-yellow-200"]
+        .strong.indent VFW Reports
+        .gbtn.w-full.text-center = link_to "Month Voucher Report",voucher_vfw_post_path(Date.today.last_month)
+        .gbtn.w-full.text-center = link_to "Quarter Voucher Report",quarter_vfw_post_path(Date.today.last_month)
+
+      / .w3-bar-item
+      /   button.gbtn.w-full Trustee Audit PDF
+      / .w3-bar-item
+      /   button.gbtn.w-full Trustee Audit HTML
+
+
+

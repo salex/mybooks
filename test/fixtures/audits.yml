@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  client: one
+  book: one
+  date_from: 2025-10-15
+  balance: 1
+  outstanding: 1
+  settings: MyText
+
+two:
+  client: two
+  book: two
+  date_from: 2025-10-15
+  balance: 1
+  outstanding: 1
+  settings: MyText

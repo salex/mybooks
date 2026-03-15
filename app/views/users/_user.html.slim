@@ -1,0 +1,25 @@
+div id="#{dom_id user}"
+  p
+    strong.w-40.inline-block.text-right Client:
+    =< user.client_id
+  p
+    strong.w-40.inline-block.text-right Email:
+    =< user.email_address
+  p
+    strong.w-40.inline-block.text-right Username:
+    =< user.username
+  p
+    strong.w-40.inline-block.text-right Roles:
+    =< user.roles
+  p
+    strong.w-40.inline-block.text-right Default book:
+    =< user.default_book
+  / p
+  /   strong.w-40.inline-block.text-right Password digest:
+  /   =< user.password_digest
+  div
+    = link_to icon('fas fa-eye',"Show User"), user,class:"btn-sm-green"
+    = link_to icon('fas fa-edit',"Edit User"),  edit_user_path(user),class:"btn-sm-green"
+
+    hr.border-1.border-blue-500.my-1
+

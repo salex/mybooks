@@ -1,0 +1,56 @@
+= form_with(model: @audit) do |form|
+  - if @audit.errors.any?
+    div style="color: red"
+      h2 = "#{pluralize(@audit.errors.count, "error")} prohibited this audit from being saved:"
+      ul
+        - @audit.errors.each do |error|
+          li = error.full_message
+  div.flex.gap-4
+    div.w-5/12
+      div
+        = form.label :client_id, class: "inline-block w-28 font-bold text-right"
+        = form.text_field :client_id, class:'border-b-1 m-2'
+
+      div
+        = form.label :book_id, class: "inline-block w-28 font-bold text-right"
+        = form.text_field :book_id, class:'border-b-1 m-2'
+
+      div
+        = form.label :date_from, class: "inline-block w-28 font-bold text-right"
+        = form.date_field :date_from, class:'border-b-1 m-2'
+
+      div
+        = form.label :balance, class: "inline-block w-28 font-bold text-right"
+        = form.number_field :balance, class:'border-b-1 m-2'
+
+      div
+        = form.label :outstanding, class: "inline-block w-28 font-bold text-right"
+        = form.number_field :outstanding, class:'border-b-1 m-2'
+
+      div
+        = form.label :json, class: "inline-block w-28 font-bold text-right"
+        = form.textarea :json, class:'border-b-1 m-2'
+
+      div.font-bold.text-red-500 Cancel if you don't know what you are doing!
+      div Why instructions
+      ul#selector
+        li The text area to the left contains contents of a  YAML file.
+        li YAML is structured text
+        li Rows can be indented with spaces, which defines a hierarchy
+        li Each row can be consider a defined variable
+        li Most variables are strings, numbers or dates
+        li You can only change variables, changing any other areas will most likely generate an error
+        li 95% of the lines are seldom changed. You normally only have to change :checking items :balance and :outstaning each quarter!
+      div[class="btn-submit"]
+        = form.submit
+
+
+
+    div.w-7/11
+      / .box = text_area_tag :settings,@audit.settings,rows:25,cols:80,class:'scroll-auto border-1 p-2'
+
+      = form.label :settings, class: "block font-bold"
+      = form.textarea :settings,rows:25,cols:80,class:'scroll-auto border-1 p-2'
+
+
+ 

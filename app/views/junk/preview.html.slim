@@ -1,0 +1,35 @@
+div[data-controller="blueBackground"]
+div.w-full.bg-white.p-2
+  p[ style="color: green"] = notice
+
+  h1.font-bold.text-2xl Preview Bank Transaction
+  div.flex.gap-8
+    =< link_to icon('fas fa-list',"Cancel - List Bank Statements"), bank_statements_path, class:"btn-cancel"
+    =< link_to icon('fas fa-list',"Reconcile Bank Statement"), reconcile_bank_statement_path, class:"btn-cancel"
+
+    / = link_to link_to icon('fas fa-plus-square', "Create New Bank Transactions"), import_create_bank_bank_transactionsactions_path,class:"btn-link", method: :patch
+  div
+  table.classic.w-full
+    tr
+      th PostDate
+      th Category/Type
+      th.w-5/12 Description
+      th Amount
+      th ClientId
+      th BookId
+      th SplitId
+      th Id
+      th Pennies
+
+    - @bank_transactions.reverse.each do |t|
+      tr
+         td = t.attributes['post_date']
+         td = t.attributes['category']
+         td = t.attributes['description']
+         td.text-right = number_to_currency(t.attributes['amount'])
+         td = t.attributes['client_id'] || 0
+         td = t.attributes['book_id'] || 0
+         td = t.attributes['split_id'] || 0
+         td = t.attributes['id'] || 0
+         / maybe @flipper here
+         td.text-right = (t.amount * 100).round

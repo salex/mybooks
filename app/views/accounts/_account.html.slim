@@ -1,0 +1,29 @@
+div id="#{dom_id account}"
+  p
+    strong.w-40.inline-block.text-right Client:
+    =< account.client_id
+  p = Current.client.inspect
+  p
+    strong.w-40.inline-block.text-right Book:
+    =< account.book_id
+  p
+    strong.w-40.inline-block.text-right Name:
+    =< account.name
+  p
+    strong.w-40.inline-block.text-right Account type:
+    =< account.account_type
+  p
+    strong.w-40.inline-block.text-right Code:
+    =< account.code
+  p
+    strong.w-40.inline-block.text-right Description:
+    =< account.description
+  p
+    strong.w-40.inline-block.text-right Placeholder:
+    =< account.placeholder
+  p
+    strong.w-40.inline-block.text-right Parent:
+    =< account.parent_id
+  p
+    strong.w-40.inline-block.text-right Level:
+    =< account.level

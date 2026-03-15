@@ -1,0 +1,6 @@
+div.w-full
+  h1.font-bold.text-2xl New Audit
+  div = link_to icon('fas fa-list',"Cancel - List Audits"), audits_path, class:"btn-sm-green"
+  hr.border-1.border-blue-500.my-1
+  == render "form", audit: @audit
+

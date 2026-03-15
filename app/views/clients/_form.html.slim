@@ -1,0 +1,47 @@
+= form_with(model: @client) do |form|
+  - if @client.errors.any?
+    div style="color: red"
+      h2 = "#{pluralize(@client.errors.count, "error")} prohibited this client from being saved:"
+      ul
+        - @client.errors.each do |error|
+          li = error.full_message
+
+  div = "Client ID:#{@client.id}"
+  div
+    = form.label :name, class: "inline-block w-28 font-bold text-right"
+    = form.text_field :name, class:'border-b-1 m-2'
+
+  div
+    = form.label :acct, class: "inline-block w-28 font-bold text-right"
+    = form.text_field :acct, class:'border-b-1 m-2'
+
+  div
+    = form.label :address, class: "inline-block w-28 font-bold text-right"
+    = form.text_field :address, class:'border-b-1 m-2'
+
+  div
+    = form.label :city, class: "inline-block w-28 font-bold text-right"
+    = form.text_field :city, class:'border-b-1 m-2'
+
+  div
+    = form.label :state, class: "inline-block w-28 font-bold text-right"
+    = form.text_field :state, class:'border-b-1 m-2'
+
+  div
+    = form.label :zip, class: "inline-block w-28 font-bold text-right"
+    = form.text_field :zip, class:'border-b-1 m-2'
+
+  div
+    = form.label :phone, class: "inline-block w-28 font-bold text-right"
+    = form.text_field :phone, class:'border-b-1 m-2'
+
+  div
+    = form.label :subdomain, class: "inline-block w-28 font-bold text-right"
+    = form.text_field :subdomain, class:'border-b-1 m-2'
+
+  div
+    = form.label :domain, class: "inline-block w-28 font-bold text-right"
+    = form.text_field :domain, class:'border-b-1 m-2'
+
+  div[class="btn-submit"]
+    = form.submit

@@ -1,0 +1,31 @@
+div[data-controller="blueBackground"]
+div.w-full.bg-white.p-2
+
+  p[ style="color: green"] = notice
+
+  h1.font-bold.text-2xl Uploaded Transaction OOOOOFFFFXXXX
+  div.flex.gap-8
+    =< link_to icon('fas fa-list',"Cancel - List Bank Transactions"), bank_transactions_path, class:"btn-cancel"
+    = link_to link_to icon('fas fa-plus-square', "Preview New Bank Transaction"), preview_bank_transactions_path,class:"btn-link"
+
+  hr.border-1.border-blue-500.my-1
+  / - puts "ITS IN UPLOAD_FILE SLIM"
+  table.classic.w-full
+    / e.g Date  Type  Description Category  Amount  Balance Note
+    - list = []
+    - header_keys = @csv[0].keys
+    / tr
+    /   - header_keys.each do |val|
+    /     / - if val.include?('Date')
+    /     /   - val = 'Date'
+    /     th = val
+    - @csv.each do |tidx|
+      / tr 
+      - header_keys.each do |val|
+        / - puts "#{val} = #{tidx[val]}"
+        - list << tidx[val.strip]
+
+  div
+    - list.each do |l|
+      div = l.strip unless l.nil?
+  / - puts list

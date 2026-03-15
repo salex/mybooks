@@ -1,0 +1,44 @@
+= form_with(model: @bank_statement) do |form|
+  - if @bank_statement.errors.any?
+    div style="color: red"
+      h2 = "#{pluralize(@bank_statement.errors.count, "error")} prohibited this bank_statement from being saved:"
+      ul
+        - @bank_statement.errors.each do |error|
+          li = error.full_message
+  div.flex.flex-wrap.gap-12
+    div.col-span-2
+      div
+        = form.label :client_id, class: "inline-block w-48 font-bold text-right"
+        = form.text_field :client_id, class:'border-b-1 m-2'
+
+      div
+        = form.label :book_id, class: "inline-block w-48 font-bold text-right"
+        = form.text_field :book_id, class:'border-b-1 m-2'
+
+      div
+        = form.label :statement_date, class: "inline-block w-48 font-bold text-right"
+        = form.date_field :statement_date, class:'border-b-1 m-2'
+
+      div
+        = form.label :beginning_balance, class: "inline-block w-48 font-bold text-right"
+        = form.number_field :beginning_balance, class:'border-b-1 m-2'
+
+      div
+        = form.label :ending_balance, class: "inline-block w-48 font-bold text-right"
+        = form.number_field :ending_balance, class:'border-b-1 m-2'
+
+      div
+        = form.label :reconciled_date, class: "inline-block w-48 font-bold text-right"
+        = form.date_field :reconciled_date, class:'border-b-1 m-2'
+
+    div.w-1/2
+      / = form.label "CSV", class: "block font-bold"
+      p.font-bold CSV
+      = form.text_area :summary, class:'inline-block border-1 h-24 m-2 w-full'
+
+  / div
+  /   = form.label :json, class: "inline-block w-48 font-bold text-right"
+  /   = form.text_area :json, class:'border-b-1 m-2 w-full'
+
+  div[class="btn-submit"]
+    = form.submit

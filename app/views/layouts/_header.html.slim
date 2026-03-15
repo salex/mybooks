@@ -1,0 +1,31 @@
+.grid.grid-cols-12.bg-malt.text-white.py-2.font-bold.print:hidden
+  .col-span-2
+    / span= image_tag("favicon.ico",size:24,class:'inline')
+    span.indent.small-caps.strong &nbsp;OurBooks
+
+  .col-span-4
+    .flex.justify-center
+      span.small-caps  Doing More For Semi-Accountants
+  .col-span-6
+    - if Current.user.present?
+      .flex.gap-8.float-right.mx-4
+        span.px-2 = Current.user.client.name + ":" + Current.user.email_address
+        / = "Current.client.name + ": " + session[:full_name]"
+        / span.px-2.hover:bg-blue-300.hover:text-black.text-blue-300.text-lg.rounded = link_to "Profile", root_path
+        span.px-2.hover:bg-blue-300.hover:text-black.text-blue-300.text-lg.rounded = button_to icon('fa fa-sign-out',"SignOut"), session_path, method: :delete, form:{data: { turbo_confirm: 'Are you sure?', turbo_method:'delete' }}, class:" text-lg inline-block text-blue-300 pr-4 float-right hover:text-black rounded"
+
+    - else
+      span.float-right = link_to icon('fa fa-sign-in',"SignIn"), new_session_path,
+        class:"hover:bg-blue-300 inline-block px-3 mx-3 text-blue-300 hover:text-black text-lg rounded"
+
+- unless Current.user.present?
+  div.print:hidden.sticky.top-0.z-20.bg-black.text-white
+    .flex.gap-16.bg-black.text-white.font-bold.text-lg.p-1
+    = link_to "Dashboard",dashboard_path, class:"hover:bg-gray-300 inline-block h-8 px-3 hover:text-black font-bold text-lg"
+
+    = link_to "Home", root_path, class:"hover:bg-gray-300 inline-block h-8 px-3 hover:text-black font-bold text-lg"
+    = link_to "About",about_path, class:"hover:bg-gray-300 inline-block h-8 px-3 hover:text-black font-bold text-lg"
+
+
+
+

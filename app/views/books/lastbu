@@ -1,0 +1,1 @@
+rsync rails@104.248.4.230:/home/rails/backups/apps/databases/our_books/daily/our_books_production_2025-07-10.sql.gz .

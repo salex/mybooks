@@ -1,0 +1,26 @@
+RootAccount
+  1!Assets
+    2!Current
+      3!Cash
+      3!Checking
+      3!Savings
+      3!Investments
+    2!Fixed
+    2Archived
+  1!Equity
+    2OpeningBalance
+    2RetainedEarnings
+  1!Expenses
+    2Bank
+    2Insurance
+    2ProfessionalFees
+    2Repairs
+    2Taxes
+    2Travel
+    2Utilities
+    2VFW
+  1!Income
+    2VFW
+  1!Liabilities
+
+

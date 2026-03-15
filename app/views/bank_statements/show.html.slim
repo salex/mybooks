@@ -1,0 +1,82 @@
+div[data-controller="blueBackground"]
+div.w-full.bg-white.p-2
+  p style="color: green" = notice
+  h1.font-bold.text-2xl Showing Bank Statement
+
+  div.flex.gap-6
+    = link_to icon('fas fa-edit',"Edit Bank Statement"), edit_bank_statement_path(@bank_statement), class:"btn-sm-green"
+    = link_to icon('fas fa-list',"List Bank Statements"), bank_statements_path, class:"btn-sm-green"
+    - if @bank_statement.transactions.present?
+      = link_to link_to icon('fas fa-plus-square', "Import New Bank Transaction"), import_bank_transactions_path,class:"btn-link"
+      =< link_to icon('fa-credit-card',"Reconcile Bank Statement"), reconcile_bank_statement_path, class:"btn-cancel"
+    = button_to icon('fas fa-trash',"Destroy Bank Statement"), @bank_statement, method: :delete, form:{data: { turbo_confirm: 'Are you sure?', turbo_method:'delete' }}, class:"btn-warn"
+
+  hr.border-1.border-blue-500.my-1 
+  / == render @bank_statement
+  div id="#{dom_id @bank_statement}"
+    div.flex.gap-5.justify-center.flex-wrap
+    
+      div
+        strong.inline-block.text-right Client:
+        =< @bank_statement.client_id
+      div
+        strong.inline-block.text-right Book:
+        =< @bank_statement.book_id
+      div
+        strong.inline-block.text-right Statement date:
+        =< @bank_statement.statement_date
+      div
+        strong.inline-block.text-right Reconciled date:
+        =< @bank_statement.reconciled_date
+
+    div.flex.gap-5.justify-center.flex-wrap
+
+      div
+        strong.inline-block.text-right Beginning balance:
+        =< @bank_statement.beginning_balance
+      div
+        strong.inline-block.text-right Ending balance:
+        =< @bank_statement.ending_balance
+    div
+      - unless @bank_statement.transactions.present?
+        -  if @bank_statement.reconciled_splits.present?
+          -keys = @bank_statement.reconciled_splits[0].keys
+          table.classic.w-full
+            caption.text-left.font-bold Bank Statement Entries/Splits
+            thead
+              tr
+                - keys.each do |k|
+                  th =  k
+            tbody
+              - @bank_statement.reconciled_splits.each do |s|
+                tr
+                  - keys.each.with_index do |k,i|
+                    - if i == 0
+                      td.text-center = link_to(s[k],entry_path(s[k]),class:'blue-link')
+                    - elsif s[k].is_a?(String)
+                      td = s[k]
+                    - else
+                      td.text-right = s[k]
+
+        - else
+          div.font-bold 
+            p There are no BankTransaction for the BankStatement. It is probably reconciled. Below is a table of Checking splits for the Bank Statement period. 
+            p All reconcile date should be the end of the Bank Statement month. That will be fixed in the future.
+          -keys = @bank_statement.entry_splits[0].keys
+          table.classic
+            caption.text-center.font-bold Bank Statement Entries/Splits
+            thead
+              tr
+                - keys.each do |k|
+                  th =  k
+            tbody
+              - @bank_statement.entry_splits.each do |s|
+                tr
+                  - keys.each do |k|
+                    - if s[k].is_a?(String)
+                      td = s[k]
+                    - else
+                      td.text-right = s[k]
+      - else
+        = render @bank_statement
+

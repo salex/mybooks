@@ -1,0 +1,33 @@
+/ div class="pbox p-2 fs8"
+/   p 012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789 hi pbox, should be 7.5 inches. hi pbox, should be 7.5 inches. hi pbox, should be 7.5 inches. XX hi pbox, should be 7.5 inches. hi pbox, should be 7.5 inches. hi pbox, should be 7.5 inches. hi pbox, should be 7.5 inches. hi pbox, should be 7.5 inches.
+
+/   p it does not look right on screen, but [ronts find ]
+/   p ="Book #{Current.book}"
+
+div.w-full
+  p style="color: green" = notice
+
+  h1.font-bold.text-2xl Audits
+  = link_to link_to icon('fas fa-plus-square', "New Audit"), new_audit_path,class:"btn-primary"
+  hr.border-1.border-blue-500.my-1
+
+  #audits
+    table.classic
+      tr 
+        th Book
+        th Date
+        th Show
+        th Edit
+        th Print
+
+      - @audits.order(:date_from).reverse.each do |audit|
+        tr
+          td = audit.book_id
+          td = audit.date_from
+          td = link_to icon('fas fa-eye',"Show Audit"), audit,class:"btn-sm-green"
+          td = link_to icon('fas fa-edit',"Edit Audit"),  edit_audit_path(audit),class:"btn-sm-green"
+          td = link_to icon('fas fa-edit',"Print Audit"), print_audit_path(audit),class:"btn-sm-green"
+
+
+
+

@@ -1,0 +1,7 @@
+.fs8.print:text-print
+  .font-lg.font-bold VFW Quarter Voucher
+
+  hr.border.m-1
+  = render template:"reports/summarypl"
+  hr.border.m-1
+  div.fs8.p-1 = render partial: 'ledger', locals:{from:@from,to:@to,account:@account}

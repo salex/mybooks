@@ -1,0 +1,123 @@
+= turbo_frame_tag "ledger", target: '_top'
+  #Ledger.bg-white.mt-1.px-2.print:text-xs
+
+    - lines = account.placeholder ? account.children_ledger(from,to) : account.account_ledger(from,to)
+    - caption = "#{account.account_type} Account #{account.name} Ledger from: #{from} to: #{to}"
+    - summary = lines.pop
+    div.pt-1.text-sm.md:text-base
+      table.classic.w-full
+        tr{class="print:text-[9px]"}
+          th Range Summary
+          td.text-right Total Debits(+):
+          td.tleft.under =to_money summary[:checking][:db]
+          td.text-right Total Credits(-):
+          td.tleft.under =to_money summary[:checking][:cr]
+          td.text-right Difference:
+          td.tleft.under =to_money summary[:balance]
+    div.md:hidden
+      div{class="grid grid-cols-3 gap-2 text-[9px]"}
+        - lines.reverse.each_with_index do |row,i|
+          div.border-b.border-black.col-span-2 
+            div 
+              span.inline-block.font-bold.text-right.mr-2.w-16 Date:
+              - if row[:id].present? && true
+                / policy(account).trustee?
+                = link_to(row[:date], edit_entry_path(row[:id]),class:['blue-link'])
+                |&nbsp;&nbsp; 
+
+                / = link_to entries_duplicate_path(row[:id]), data: { confirm: 'Duplicate Entry: Are you sure?' } do
+                /   i class="fas fa-copy noprint blue-link"
+              - else
+                = row[:date]
+
+            div 
+              span.inline-block.font-bold.text-right.mr-2.w-16 Numb:
+              span = row[:numb]
+            div 
+              span.inline-block.font-bold.text-right.mr-2.w-16 Desc:
+              span  = row[:desc]
+            div 
+              span.inline-block.font-bold.text-right.mr-2.w-16 Acct:
+              span  = row[:memo]
+
+          div.border-b.border-black 
+            div 
+              span.inline-block.font-bold.text-right.mr-2.w-16 R:
+              span = row[:r]
+            div 
+              span.inline-block.font-bold.text-right.mr-2.w-16 Debit:
+              span = row[:checking][:db].zero? ? nil : to_money(row[:checking][:db])
+            div 
+              span.inline-block.font-bold.text-right.mr-2.w-16 Credit:
+              span = row[:checking][:cr].zero? ? nil : to_money(row[:checking][:cr])
+            div 
+              span.inline-block.font-bold.text-right.mr-2.w-16 Bal:
+              span  = to_money row[:balance]
+    div.hidden.md:block
+      table{class="classic w-full print:text-[9px]" data-controller="sortTable toggleSplits"}
+        caption
+          .box = caption
+        thead#sort_header
+          tr
+            th.w10.sortable[data-action="click->sortTable#sortBy"]
+              i.fas.fa-sort.noprint.pointer-events-none
+              |Date&nbsp;&nbsp;
+              i.fas.fa-edit.pointer-events-none
+              |&nbsp;&nbsp;Dup
+
+            th.sortable[data-action="click->sortTable#sortBy"]
+              i.fas.fa-sort.noprint.nopointer
+              |Num
+            th.w30.sortable[data-action="click->sortTable#sortBy"]
+              i.fas.fa-sort.noprint.nopointer
+              |Desc
+            th.w15r.sortable[data-action="click->sortTable#sortBy"]
+              i.fas.fa-sort.noprint.nopointer
+              |Account
+            th.sortable[data-action="click->sortTable#sortBy"]
+              i.fas.fa-so
+              |R
+            th Debits
+            th Credits
+            th Balance
+        - lines.reverse.each_with_index do |row,i|
+          tr
+            td 
+              - if row[:id].present? && true
+                / policy(account).trustee?
+                = link_to(row[:date], edit_entry_path(row[:id]),class:['blue-link'])
+                |&nbsp;&nbsp;
+                = link_to entries_duplicate_path(row[:id]), data: { confirm: 'Duplicate Entry: Are you sure?' } do
+                  i class="fas fa-copy noprint blue-link"
+
+
+              - else
+                = row[:date]
+            td = row[:numb]
+            td = row[:desc] 
+            - if row[:memo] == "- Split Transaction -"
+              td.toggle-splits.blue-link[data-action="click->toggleSplits#toggle"] = "- Split Transaction -"
+              td 
+            - else 
+              td = params[:split_reg].present? ? nil : row[:memo]
+              td = params[:split_reg].present? ? nil : row[:r] 
+            td.text-right = row[:checking][:db].zero? ? nil : to_money(row[:checking][:db])
+            td.text-right = row[:checking][:cr].zero? ? nil : to_money(row[:checking][:cr])
+            - if row[:id].blank?
+              td.text-right = to_money(row[:balance])
+            - else
+              td.text-right = row[:balance].zero? ? nil : to_money(row[:balance])
+          - if row[:memo] == "- Split Transaction -" || params[:split_reg].present?
+            tbody.split-rows[data-toggleSplits-target="tbody"]
+              - row[:details].each do |d|
+                tr.snowSelectedBackground
+                  td
+                  td = d[:action]
+                  td = d[:memo]
+                  td = d[:name]
+                  td = d[:r]
+                  td.text-right = d[:db].zero? ? nil : to_money(d[:db])
+                  td.text-right = d[:cr].zero? ? nil : to_money(d[:cr])
+                  td
+       
+    br

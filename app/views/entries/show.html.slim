@@ -1,0 +1,60 @@
+- splits = @entry.splits
+
+.flex.gap-8.print
+  div 
+    button[class="#{btn_sm_blue} m-2"] =  link_to 'Edit', edit_entry_path(@entry)
+  div
+    strong ID:
+    = @entry.id
+
+  div
+    strong Book:
+    = @entry.book.name
+  div
+    strong Numb:
+    = @entry.numb
+  div
+    strong Post date:
+    = @entry.post_date
+  div
+    strong Description:
+    = @entry.description
+  div
+    strong Fit:
+    = @entry.fit_id
+  div
+    strong Amount:
+    - @entry.set_attributes
+    = money @entry.amount
+
+table.gl-table.print.fs9
+  caption = "FIT_ID #{@entry.fit_id}"
+  thead
+    tr.header-row
+      td.font-bold Date
+      td.font-bold Numb &plusmn;
+      td.font-bold Description
+
+      td.font-bold Transfers
+      td.font-bold R
+      td.font-bold Increase
+      td.font-bold Decrease
+      td.font-bold Amount
+  tbody id="entry"
+    tr.entry-row
+      td = @entry.post_date
+      td = @entry.numb
+      td = @entry.description
+      td[colspan="5"]
+    
+  tbody
+    - splits.each do |s|
+      tr
+        td = "SID #{s.id}"
+        td = s.client_id
+        td = s.memo
+        td = s.account.long_account_name
+        td = "#{s.reconcile_state} #{s.reconcile_date}"
+        td.text-right = to_money s.debit unless s.debit.zero?
+        td.text-right = to_money s.credit unless s.credit.zero?
+        td.text-right = s.amount

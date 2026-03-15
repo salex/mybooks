@@ -1,0 +1,84 @@
+@import "tailwindcss";
+
+
+@layer components {
+/*  .sidebar-menu {
+    @apply btn-sqr-blue text-center font-bold border border-zinc-100 py-1;
+  }
+*/  
+  .btn-tiny, .btn-xsm {
+    @apply border-zinc-300 py-0 px-1 inline-block rounded hover:opacity-70 font-bold border;
+  }
+  .btn-sm {
+     @apply border-zinc-300 py-0.5 px-1.5 inline-block rounded hover:opacity-70 font-bold border-2;
+  }
+  .btn-md {
+    @apply border-zinc-300 py-1 px-2 inline-block rounded hover:opacity-70 font-bold border-2;
+  }
+  .btn-lg {
+    @apply border-zinc-300 py-1.5 px-2.5 inline-block rounded hover:opacity-70 font-bold border-2;
+  }
+  .btn-primary{
+    @apply py-1 rounded font-bold m-1 px-4 bg-blue-300 hover:opacity-70 inline-block;
+  }
+  .btn-cancel{
+    @apply py-1 rounded font-bold m-1 px-4 bg-amber-400 hover:opacity-70 inline-block;
+  }
+  .btn-link{
+    @apply py-1 rounded font-bold m-1 px-4 bg-green-400 hover:opacity-70 inline-block;
+  }
+  .btn-sm-green{
+    @apply py-1 rounded font-bold m-1 px-4 bg-green-400 hover:opacity-70 inline-block;
+  }
+  .btn-sm-blue{
+    @apply py-1 rounded font-bold m-1 px-4 bg-blue-400 hover:opacity-70 inline-block;
+  }
+  .btn-sm-red{
+    @apply py-1 rounded font-bold m-1 px-4 bg-red-400 hover:opacity-70 inline-block;
+  }
+
+
+  .btn-submit {
+    @apply rounded-lg font-bold py-2 px-5 bg-blue-600 hover:opacity-70 text-white inline-block cursor-pointer;
+  }
+  .btn-warn {
+    @apply py-1 rounded font-bold  m-1 px-4 bg-red-600 text-white hover:opacity-70 inline-block;
+  }
+
+  .link-blue {
+    @apply  font-bold text-blue-800 hover:opacity-60
+  }
+
+  .link-green {
+    @apply  font-bold text-green-800 hover:opacity-60
+  }
+
+
+  .icon {
+    @apply w-7 text-sm mx-1 rounded-md font-bold py-0.5 text-center text-white px-1 border-2 border-zinc-300 hover:opacity-70 inline-block;
+  }
+
+  .birdie{ @apply bg-green-400 hover:bg-green-500}
+  .eagle{ @apply bg-blue-400 hover:bg-blue-500}
+  .albatros{@apply bg-amber-400 hover:bg-amber-500}
+  .cut{@apply bg-red-400 hover:bg-red-500}
+
+  .blue-link{@apply  text-blue-600 hover:text-green-800 }
+
+  .st-1 {@apply bg-green-300 hover:bg-green-400}
+  .st-2 {@apply bg-blue-300 hover:bg-blue-400}
+  .st-3 {@apply bg-amber-300 hover:bg-amber-400}
+  .st-9 {@apply bg-red-300 hover:bg-red-400}
+  .btn-schedule {
+    @apply text-white py-1 px-2 bg-blue-800 hover:bg-blue-500  border-zinc-300 border-2 inline-block;
+  }
+  .btn-gray {
+     @apply bg-slate-500 text-white py-2 font-bold border-zinc-300 px-2 inline-block rounded hover:opacity-70 font-bold border-1;
+   }
+  .strong {
+    @apply font-bold text-lg
+  }
+
+
+
+}

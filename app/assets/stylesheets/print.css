@@ -1,0 +1,33 @@
+
+@media print {
+
+  .fs8 {
+     font-size: 80%;
+  }
+  .fs6 {
+     font-size: 60%;
+  }
+
+  .page-break {
+     page-break-after: always !important;
+  }
+   .top, .header {
+     display: none;
+  }
+   fieldset {
+     border: none;
+  }
+   body {
+/*     font-size: 8pt !important;*/   
+    background-color: #fff;
+     width: 9in;
+     margin: 0 auto;
+
+  }
+   a[href]:after {
+     content: none !important;
+  }
+   .noprint {
+     display: none !important;
+  }
+}

@@ -1,0 +1,107 @@
+div[data-controller="blueBackground"]
+div.mt-2.mx-2.h-full.pb-12[data-controller="entryLedger"]
+  .flex.py-2.bg-gray-200.border.border-gray-400
+    div.flex-none.px-2
+      h5.font-bold.text-lg = header
+    div.mx-10.flex-grow.px-2
+      button[class="#{btnInfo} mr-2" data-action="click->entryLedger#check_valid"] Validate
+      button[class="#{btnWarn} mr-2"] = link_to('Cancel', session[:current_acct].present? ? account_path(session[:current_acct]) :request.headers['HTTP_REFERER'],
+        class:"")
+      - unless @entry.new_record? || @entry.reconciled?
+        - confirm_msg = @entry.cleared? ? "Entry has been Cleared - Are you sure?" : 'Are you sure?'
+        .inline-block= button_to icon('fas fa-trash',"Destroy Entry"), @entry, method: :delete, form:{data: { turbo_confirm: 'Are you sure?', turbo_method:'delete' }}, class:"#{btn_sm} bg-red-700 text-white hover:bg-red-500"
+
+
+    div.mr-10.flex-none.px-2
+      = content_tag(:button,'Add Split Row', class:"#{btnSuccess} mr-2" ,
+        data:{action:"click->entryLedger#addSplit"}) 
+      = content_tag(:button,'Clear Amounts', class:"#{btnSuccess} mr-2",
+        data:{action:"click->entryLedger#clearAmounts"}) 
+
+      - if @entry.has_fit_id?
+        span[title="#{@entry.fit_id}"] 
+          | Entry Has FitID 
+          i[class="fas fa-question"]
+
+  div
+
+    = form_with model: @entry, data:{entryLedger_target:'theForm',action:'  keypress->entryLedger#preventSubmit'} do |f|
+      
+      - if @entry.errors.any?
+        #error_explanation[data-entryLedger-target='errors']
+          h2 = "#{pluralize(@entry.errors.count, "error")} prohibited this entry from being saved:"
+          ul
+            - @entry.errors.full_messages.each do |message|
+              li = message
+      #ledger[data-controller="autoNumber"]
+        table.gl-table
+          thead
+            tr.header-row
+              td.font-bold.w-36 Date
+              td.font-bold.w-20 Numb &plusmn;
+              td.font-bold.w-1/4 Description/Memo
+
+              td.font-bold Transfers
+              td.font-bold R
+              td.font-bold Increase(CR)
+              td.font-bold Decrease(DB)
+          tbody id="entry"
+            tr.entry-row
+              td = f.date_field(:post_date,class:'w-full bg-white',data:{controller:'flatpickr',action:"change->entryLedger#changed",entryLedger_target:'date'})
+              td = f.text_field(:numb,class:'w-full bg-white',data:{autoNumber_target:'numb',action:'keydown->autoNumber#keyDown'})
+              td = f.text_area(:description,class:"w-full bg-white",data:{entryLedger_target:'description',action:"change->entryLedger#changed"})
+              td = f.hidden_field(:fit_id) + tag.div("Accounts name are in reverse hierarchical order. Select a pulldown and start typing to lookup a name!",class:"lg:w-96 italic text-sm")
+              td
+              td
+              td
+          tbody[data-entryLedger-target='splitsTbody']
+            - rid = 0
+            = f.fields_for :splits do |s|
+              tr[id="split_#{rid}"]
+                - if s.object.id.present?
+                  td 
+                    = s.hidden_field(:id) 
+                    = s.check_box(:_destroy,class:'s-delete',data:{entryLedger_target:'deletes',
+                      action:"click->entryLedger#deleteRow"})
+                    i.fas.fa-minus-square Del
+                - else
+                  td 
+                    = s.hidden_field(:id)
+                    span[data-entryLedger-target='deletes']
+                      i.fas.fa-cut[data-action="click->entryLedger#cutRow"] 
+                td.bg-purple-100 = s.text_field(:action,class:'w-full bg-white')
+                td.bg-purple-100 = s.text_field(:memo,class:'w-full bg-white')
+                td = s.select(:account_id,
+                  options_for_select(Current.book.acct_sel_opt,
+                  selected: s.object.account_id,
+                  disabled:Current.book.settings['acct_placeholders'],
+                  include_blank: ''),
+                  {},
+                  class:'w-full bg-white',
+                  dir:"ltr",
+                  data:{entryLedger_target:'transfer',
+                  action:"change->entryLedger#changed"})
+                td 
+                  span[data-action='click->entryLedger#reconcile'] = (s.object.reconcile_state ||='n')
+                  div = s.hidden_field(:reconcile_state,value:s.object.reconcile_state ||='n', class:'w1 hidden')
+                td = s.text_field(:debit,value:Ledger.to_fixed(s.object.debit),class:'w-full  bg-white text-right',
+                data:{entryLedger_target:'debit',action:"click->entryLedger#selectit change->entryLedger#changed" })
+                td = s.text_field(:credit,value:Ledger.to_fixed(s.object.credit),class:'w-full bg-white text-right',
+                data:{entryLedger_target:'credit',action:"click->entryLedger#selectit change->entryLedger#changed"})
+                td.hidden = s.hidden_field(:amount,class:'',data:{entryLedger_target:'amount'})
+              - rid += 1
+        hr.underline
+        div style="float:right;"
+          span.balanced[data-entryLedger-target='balanced'] Start
+
+        - if @entry.reconciled? && !params[:unreconcile].present?
+          h4.font-bold.text-2xl.text-red-500 
+            span Entry has been reconciled and can't be changed. 
+            br
+            span Use a transfer entry if there was a problem/mistake.
+
+        - else
+          button.bg-w3red.hover:text-white.rounded.p-3.text-xl.font-bold.mt-2[data-entryLedger-target='submit' data-action="click->entryLedger#submitForm" disabled="disabled"] = "#{action_name == 'edit' ? 'Update' : 'Create'} Entry"
+        #last_numbers[data-autoNumber-target='last_numbers' data-numbers="#{Current.book.last_numbers.to_json}"]
+  
+      

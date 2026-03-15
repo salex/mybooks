@@ -1,0 +1,19 @@
+div id="#{dom_id audit}"
+  p
+    strong.w-40.inline-block.text-right Client:
+    =< audit.client_id
+  p
+    strong.w-40.inline-block.text-right Book:
+    =< audit.book_id
+  p
+    strong.w-40.inline-block.text-right Date from:
+    =< audit.date_from
+  p
+    strong.w-40.inline-block.text-right Balance:
+    =< audit.balance
+  p
+    strong.w-40.inline-block.text-right Outstanding:
+    =< audit.outstanding
+  p
+    strong.w-40.inline-block.text-right Settings:
+    =< audit.settings

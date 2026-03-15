@@ -1,0 +1,7 @@
+div[data-controller="blueBackground"]
+div.w-full.bg-white.p-2
+  h1.font-bold.text-2xl New Account
+  div = link_to icon('fas fa-list',"Cancel - List Accounts"), accounts_path, class:"btn-sm-green"
+  hr.border-1.border-blue-500.my-1
+  == render "form", account: @account
+

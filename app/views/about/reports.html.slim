@@ -1,0 +1,17 @@
+#about
+  .grid.grid-cols-12[data-controller="aboutPager"]
+    #page1.col-span-10[data-aboutPager-target="page"]
+
+      h5.strong About Reports
+      = image_tag('screenshot.png',class:'image-fit')
+      .w3-row.
+        .w3-col.s10
+          p.my-1.5 Under Construction. There are a few out there
+
+    .col-span-2
+      h5.strong About Reports
+      .w3-card-2.bg-yellow-200.text-center
+        .goldey.w-full.mb-1.p-1[data-action="click->aboutPager#goTo" data-url="page1"] Reports
+      = render partial:'links'
+
+ 

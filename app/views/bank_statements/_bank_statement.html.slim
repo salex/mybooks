@@ -1,0 +1,61 @@
+div id="#{dom_id bank_statement}"
+div
+  table.classic.w-full
+    caption.text-left.font-bold = "Bank Transactions"
+    thead
+      tr
+        th Id
+        th Split
+        th Date
+        th Category
+        th Description
+        th Amount
+        th Link
+
+    - sum = 0
+    - rsum = 0
+    - ursum = 0
+    - splits = []
+    - btrans = @bank_transactions.size
+
+    - @bank_transactions.each do |bt|
+      - sum += bt.amount
+      - if bt.split_id.present?
+        - splits << bt.id
+        - rsum += bt.amount
+      - else 
+        - ursum += bt.amount
+
+      tr
+        td = bt.id
+        td = bt.split_id
+        td = bt.post_date
+        td = bt.category
+        td = bt.description
+        td.text-right = number_to_currency(bt.amount)
+        td
+          - if bt.split_id.blank?
+            = link_to icon('fas fa-link',""), link_bank_transaction_path(bt.id),class:"icon bg-purple-600"
+          - else
+            = nil
+  div
+    strong.m-2 = "Total Amount: #{'%.2f' % sum}"
+    strong.m-2 = "Total Reconciled: #{'%.2f' % rsum}"
+    strong.m-2 = "Total UnReconciled: #{'%.2f' % ursum}"
+    strong.m-2 = '='
+    strong.m-2 = "Balance: #{'%.2f' % (ursum + rsum) }"
+
+  div
+    - beginning_bal = bank_statement.beginning_balance/100.00
+    - ending_bal = bank_statement.ending_balance/100.00
+
+    strong.m-2 = "Beginning Bal: #{'%.2f' % beginning_bal}"
+    strong.m-2 = "Ending Bal: #{'%.2f' % ending_bal}"
+    strong.m-2 = "Diff Bal: #{'%.2f' % (ending_bal - beginning_bal)}"
+
+  div
+    - if ursum.zero?
+      = form_with(scope: :ids, url: reconciled_bank_statement_path, method: :patch) do |form| 
+        - splits.each do |s|
+          = form.hidden_field :id, name: "ids[]", value: s
+        = form.submit "Submit Transactions", class:"btn-submit"

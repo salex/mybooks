@@ -1,0 +1,25 @@
+div[data-controller="blueBackground"]
+div.w-full.bg-white.p-2
+
+  p[ style="color: green"] = notice
+
+  h1.font-bold.text-2xl Uploaded Transaction
+  div.flex.gap-8
+    =< link_to icon('fas fa-list',"Cancel - List Bank Transactions"), bank_transactions_path, class:"btn-cancel"
+    = link_to link_to icon('fas fa-plus-square', "Preview New Bank Transaction"), preview_bank_transactions_path,class:"btn-link"
+
+  hr.border-1.border-blue-500.my-1
+  div
+    span.font-bold = "Filename:  #{@filename}"
+
+  table.classic.w-full
+    / e.g Date  Type  Description Category  Amount  Balance Note
+    - header_keys = @csv[0].keys
+    tr
+      - header_keys.each do |val|
+        th = val
+    - @csv.reverse.each do |tidx|
+      tr 
+        - header_keys.each do |val|
+          / - puts "#{val} = #{tidx[val]}"
+          td = tidx[val]

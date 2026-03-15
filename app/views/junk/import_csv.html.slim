@@ -1,0 +1,26 @@
+div[data-controller="blueBackground"]
+div.w-full.bg-white.p-2
+  p style="color: green" = notice
+  div.flex.gap-10
+    h1.font-bold.text-2xl Import Bank Transaction
+    h1.font-bold Upload a Bank Transactions file (CSV)
+
+  div 
+    p Uploading Bank CSV files is a multi-stage process
+
+    ul 
+      li Click in the Choose File Field and select a file in your downloads directory (or wherever its stored)
+      li Click the Import button to display the CSV transactions in a table.
+      li That display  will have 'Preview CSV Transactions' button which will upload the file and what Bank Transactions can be imported.
+
+  div.flex.gap-8
+    =< link_to icon('fas fa-list',"Cancel - List Bank Transactions"), bank_transactions_path, class:"btn-cancel"
+
+  hr.border-1.border-blue-500.my-1
+
+
+  = form_with(url: { action: 'upload_csv' }, local: true, multipart: true, method: :post,data: { turbo: false }) do |form|
+      div.flex.gap-8
+        span.m-4.p-4 = form.label :file, "Select File:"
+        span.m-4.p-4.border-1.m-4.p-4.border-1 = form.file_field :file
+        span.m-4.p-4.border-1.btn-submit = form.submit "Import"

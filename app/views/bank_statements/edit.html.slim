@@ -1,0 +1,11 @@
+div[data-controller="blueBackground"]
+div.w-full.bg-white.p-2
+  h1.font-bold.text-2xl Editing Bank Statement
+  div.flex.gap-8
+    = link_to icon('fas fa-eye',"Show Bank statement"), bank_statement_path(@bank_statement), class:"btn-sm-green"
+    = link_to icon('fas fa-list',"List Bank statements"), 
+      bank_statements_path, class:"btn-sm-green"
+    = button_to icon('fas fa-trash',"Destroy Bank statement"), @bank_statement, method: :delete, form:{data: { turbo_confirm: 'Are you sure?', turbo_method:'delete' }}, class:"btn-sm bg-red-700 text-white"
+
+  hr.border-1.border-blue-500.my-1
+  == render "form", bank_statement: @bank_statement

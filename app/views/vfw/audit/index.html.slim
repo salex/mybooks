@@ -1,0 +1,25 @@
+h4.h4 VFW Trustee Audit Report
+
+table.classic
+  tr 
+    tr 
+      th Qtr Start
+      th Qtr End
+      th Date Cert
+      th Ck Balance
+      th Ck OutStnd
+      th Edit
+      th Print
+      th PDF
+
+  - @audits.each do |a|
+    - config = to_struct(YAML.load(a.yaml))
+    tr
+      td = a.date
+      td = a.date.to_date.end_of_quarter 
+      td = config.date
+      td.text-right = to_money config.checking.balance 
+      td.text-right = to_money config.checking.outstanding
+      th = link_to "Edit", edit_vfw_audit_index_path(qtr_date:a.date), class:"#{btn_sm_green}"
+      th = link_to "Print", print_vfw_audit_index_path(qtr_date:a.date), class:"#{btn_sm_green}"
+      th = link_to "PDF", pdf_vfw_audit_index_path(qtr_date:a.date), class:"#{btn_sm_green}"
