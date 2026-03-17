@@ -105,11 +105,12 @@ class Account < ApplicationRecord
     end
     # for data_lookup don't think used
     # account_name = "#{account_name}[#{self.id}]" if reverse
-    if account_name.include?('Archived')
-      return nil 
-    else
-      return account_name
-    end
+    # if account_name.include?('Archived')
+    #   return nil 
+    # else
+    #   return account_name
+    # end
+    account_name
   end
 
   def walk_tree(level,new_tree)

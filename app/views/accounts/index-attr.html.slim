@@ -1,8 +1,8 @@
 div.w-full
   p style="color: green" = notice
 
-  / = link_to link_to icon('fas fa-plus-square', "New Account"), new_account_path,class:"#{btn_sm_blue}"
-  / = link_to 'Account/Table View', index_table_accounts_path, class: ["#{btn_sm_green}"]
+  = link_to link_to icon('fas fa-plus-square', "New Account"), new_account_path,class:"#{btn_sm_blue}"
+  = link_to 'Account/Table View', index_table_accounts_path, class: ["#{btn_sm_green}"]
   span.italic Displays more information and allow edits
   hr.border-1.border-blue-500.my-1
 

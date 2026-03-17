@@ -28,6 +28,24 @@ module AccountsHelper
     }.html_safe
   end
 
+  def bt_summary(acct)
+
+    book = acct.book
+    tree = book.build_acct_tree(acct)
+    # html = content_tag(:div){
+    #   list = ""
+    #   list << content_tag(:div, link_to(acct.name,"/account/#{acct.id}", 
+    #     class:"blue-link inline-block ml-#{tree[acct.id].level}"))
+    #   list << content_tag(:div,node_balance(acct),
+    #     class:'inline-block text-right float-right')
+
+    # }
+     
+    html = content_tag(:div,"got here")
+
+    html
+  end
+
   def summary_list(root,p=0)
     # if params[:tree].present?
     #   return acct_tree(root)

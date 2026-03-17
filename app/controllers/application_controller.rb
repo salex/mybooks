@@ -8,16 +8,14 @@ class ApplicationController < ActionController::Base
   def session_expiry
 
     if Current.session
-
-      # puts "CURRENT ATTRIBUTES #{Current.attributes}"
+      # if Current.user.is_super?
+      #   # Allow access to all tenants
+      #   ActsAsTenant.current_tenant = nil
+      # end
+      # # puts "CURRENT ATTRIBUTES #{Current.attributes}"
       # puts "Current user #{Current.user.attributes}"
       Current.book = Book.find(Current.user.default_book)
-      # puts "CURRENT BOOL #{Current.book}"
 
-      # unless session[:book_id].present?
-      # helpers.set_book_session(Current.book)
-      # end
-      # session[:steve] = 'alex'
       Current.client = Current.book.client
       set_current_tenant(Current.client)### for acts_as-tenant
       key = "#{Current.session.id}_expires_at"

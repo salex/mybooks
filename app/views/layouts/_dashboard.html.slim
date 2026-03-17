@@ -34,26 +34,26 @@ div.print:hidden.sticky.top-0.z-20.bg-black.text-white
             class="#{name.to_s == 'notice' ? 'p-0 text-green-500 bg-green-100 px-4' : 'p-0 text-red-500 bg-red-100 px-4'}"]
 
             = content_tag :span, content_tag(:strong,msg)
-
-  div.bg-black.text-white.font-bold.text-lg.print:hidden
-    span.ml-6 Ledgers: &nbsp
-    .w3-dropdown-hover
-      / .gold-link-button.text-black
-      button.w3-button.px-3
-       | Root Accounts&nbsp;&nbsp;&nbsp;
-       i.fa.fa-caret-down
-       - accts = Current.book.root_acct.children.pluck(:id,:name)
-      .w3-dropdown-content.w3-card-4.w2in
-        - accts.each do |a|
-          = link_to a[1],account_path(a[0]),class:"block gbtn "
-    span Current: 
-    - accts = Current.book.checking_paths
-    - accts.each do |a|
-      = link_to a[1],account_path(a[0]),class:'mx-2 gold-link-button text-black' 
-    span
-    = link_to "Checking",account_path(Current.book.checking_acct),class:'mx-2 gold-link-button text-black' 
-    - acct = Current.book.savings_acct
-    = link_to 'Savings',account_path(acct.id),class:'mx-2 gold-link-button text-black' 
+  - if Current.book && Current.book.accounts.present?
+    div.bg-black.text-white.font-bold.text-lg.print:hidden
+      span.ml-6 Ledgers: &nbsp
+      .w3-dropdown-hover
+        / .gold-link-button.text-black
+        button.w3-button.px-3
+         | Root Accounts&nbsp;&nbsp;&nbsp;
+         i.fa.fa-caret-down
+         - accts = Current.book.root_acct.children.pluck(:id,:name)
+        .w3-dropdown-content.w3-card-4.w2in
+          - accts.each do |a|
+            = link_to a[1],account_path(a[0]),class:"block gbtn "
+      span Current: 
+      - accts = Current.book.checking_paths
+      - accts.each do |a|
+        = link_to a[1],account_path(a[0]),class:'mx-2 gold-link-button text-black' 
+      span
+      = link_to "Checking",account_path(Current.book.checking_acct),class:'mx-2 gold-link-button text-black' 
+      - acct = Current.book.savings_acct
+      = link_to 'Savings',account_path(acct.id),class:'mx-2 gold-link-button text-black' 
 
 
 

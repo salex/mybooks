@@ -1,7 +1,7 @@
 class AccountsController < ApplicationController
   # allow_unauthenticated_access
 
-  before_action :set_account, only: %i[ show edit update destroy ]
+  before_action :set_account, only: %i[ show edit update destroy new_child]
 
   # GET /accounts
   def index
@@ -38,6 +38,13 @@ class AccountsController < ApplicationController
   def new
     @account = Current.book.accounts.new
   end
+
+  def new_child
+    @parent = @account
+    @account = Account.new(book_id:@parent.book_id,parent_id:@parent.id,account_type:@parent.account_type)
+    render :new
+  end
+
 
   # GET /accounts/1/edit
   def edit
@@ -86,7 +93,7 @@ class AccountsController < ApplicationController
         @from = Ledger.set_date(params[:from])
         @to = params[:to].present? ? Ledger.set_date(params[:to]) : @today.end_of_month
       else
-        puts "HAVE SSSS #{@account.leafs}"
+        # puts "HAVE SSSS #{@account.leafs}"
         last_tran = @account.last_entry_date ||= @today.beginning_of_year
         @from = last_tran.beginning_of_month
         @from -= minus7 if Ledger.dates_in_same_month(@today,@from)

@@ -48,7 +48,11 @@ div.noprint[data-controller="blueBackground"]
         data-dateRange-url-value="accounts//#{@account.id}"]
       .col-span-4.p-2[style="max-height:20vh;overflow:scroll;"]
         .strong =  "Account Summary (#{@today})"
-        = summary_list(@account)
+        div = summary_list(@account)
+        / - book = @account.book
+        / - tree = book.build_acct_tree(@account)
+
+        / div = book.name
       .col-span-5.p-1
         div.w3-card.bg-yellow-100.p-1.mb-1
           div.strong Filter - Select Period options or Pick Date(s)

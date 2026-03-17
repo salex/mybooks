@@ -1,5 +1,6 @@
 class Book < ApplicationRecord
   acts_as_tenant(:client) ### for acts_as-tenant
+
   has_many :accounts, dependent: :destroy
   has_many :entries, dependent: :destroy
   has_many :bank_statements, dependent: :destroy
@@ -12,18 +13,17 @@ class Book < ApplicationRecord
 
   serialize :settings, coder: JSON
 
-  def tmp_accts
-    accts = self.accounts.all.order(:level,:parent_id,:name).as_json(except:[:created_at,:updated_at,:contra,:leafs,:transfer])
-    accts.each{|a| 
-      a['lan'] = Account.find(a['id']).long_account_name.split(':').reverse.join(":")
-      a['lanr'] = a['lan'].split(':').reverse.join(":")
-    }
+  # def tmp_accts
+  #   accts = self.accounts.all.order(:level,:parent_id,:name).as_json(except:[:created_at,:updated_at,:contra,:leafs,:transfer])
+  #   accts.each{|a| 
+  #     a['lan'] = Account.find(a['id']).long_account_name.split(':').reverse.join(":")
+  #     a['lanr'] = a['lan'].split(':').reverse.join(":")
+  #   }
+  # end
 
-  end
-
-  def bank_transactions_index
-    d = (Date.today - 2.years).beginning_of_month
-  end
+  # def bank_transactions_index
+  #   d = (Date.today - 2.years).beginning_of_month
+  # end
 
   def root_acct
     self.accounts.find_by(code:'ROOT',level:0)
@@ -60,13 +60,27 @@ class Book < ApplicationRecord
   end
 
   def rebuild_book_setting
-    # if any account is changed this rebuild the json setting
+    # if any account is changed this rebuild the book setting
+    # first set any acct level changes
+    self.set_acct_levels
+    # now rebuild the book settings
     self.settings = {}
     self.settings = {msg:"#{Time.now}: got message to REBUILD BOOK SETTINGS"}
     self.set_placeholders
     self.set_leafs
     self.set_acct_transfers
     self.save
+  end
+
+  def set_acct_levels
+    accounts = self.build_tree
+    accounts.each do |hash_acct|
+      curr_acct = Account.find(hash_acct.id)
+      if curr_acct.level != hash_acct.level 
+        puts "LEVEL Changed #{curr_acct.level} == #{hash_acct.level} "
+        curr_acct.update(level: hash_acct.level)
+      end
+    end
   end
 
   def set_placeholders
@@ -106,7 +120,7 @@ class Book < ApplicationRecord
       accts.each do |a|
         lan = a.long_account_name
         unless lan.nil?
-          opt[a.long_account_name] = a.id
+          opt[lan] = a.id
         end
       end
       opt
