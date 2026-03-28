@@ -93,6 +93,7 @@ module Ledger
     myofx = MyOfx.new(ofx)
   end
 
+  # NOT USED
   def self.csv_json(json)
     @table = JSON.parse(json)
     @header = @table[0].keys
@@ -107,61 +108,44 @@ module Ledger
     return { table:@table,header:@header,values:@values}
   end
 
-  # /Users/salex/downloads/Transactions-7.csv"
+  def self.get_ofx() #(filepath)
 
-  # def self.fix_csv(csvtext)
-  #   # # first remove the BOM characters if there, it screws up keys
-  #   # if csvtext.bytes[0] == 239
-  #   #   csvtext = csvtext[1..-1]
-  #   #   # else its just text from char 0..-1
-  #   # end
-  #   # split the file into array by crlf
-  #   s = csvtext.split("\r\n")
-  #   # remove any spaces is the header row
-  #   s[0]= s[0].gsub(/\s+/, "")
-  #   # join the array and return
-  #   fixed = s.join("\r\n")
-  #   return fixed
-  # end
+    statement = {}
+    ofx = File.read("/Users/salex/downloads/Transactions-13.qbo")
+    stmnt_from = ofx.index("<DTSTART>")
+    stmnt_to = ofx.index("<DTEND>")
+    balance = ofx.index("<BALAMT>")
+    # ebal = get_eol(balance)
+    tran_start = ofx.index("<BANKTRANLIST>")
+    tran_end = ofx.index("</BANKTRANLIST>") -13
 
-   def self.get_ofx() #(filepath)
+    puts "Start #{tran_start} END #{tran_end} STUFF #{ofx[tran_start..tran_end]}"
+    tlist = ofx[tran_start..tran_end]
+    lines = tlist.split(/[\r\n]+/)
+    # linesbad = tlist.split # screws up without specific line ending
+    transactions = []
+    transactions << lines.each{|l| l.strip!}
 
-     statement = {}
-     ofx = File.read("/Users/salex/downloads/Transactions-13.qbo")
-     stmnt_from = ofx.index("<DTSTART>")
-     stmnt_to = ofx.index("<DTEND>")
-     balance = ofx.index("<BALAMT>")
-     # ebal = get_eol(balance)
-     tran_start = ofx.index("<BANKTRANLIST>")
-     tran_end = ofx.index("</BANKTRANLIST>") -13
+    puts "TRANs #{transactions[0]}"
+    # transactions.each do |t|
+    #   puts t.size
+    #   t = t[1..-1]
+    #   puts "MOD #{t.size} #{t}"
+    # end
+    thing = []
+    transactions[0].each do |t|
+     nt = t[1..-1]
+     k,v = nt.split('>')
+     v = '' if v.nil?
+     k = k.downcase
+     nkv = k+':'+v
+     thing << nkv
+    end
+    puts thing
 
-     puts "Start #{tran_start} END #{tran_end} STUFF #{ofx[tran_start..tran_end]}"
-     tlist = ofx[tran_start..tran_end]
-     lines = tlist.split(/[\r\n]+/)
-     # linesbad = tlist.split # screws up without specific line ending
-     transactions = []
-     transactions << lines.each{|l| l.strip!}
-
-     puts "TRANs #{transactions[0]}"
-     # transactions.each do |t|
-     #   puts t.size
-     #   t = t[1..-1]
-     #   puts "MOD #{t.size} #{t}"
-     # end
-     thing = []
-     transactions[0].each do |t|
-       nt = t[1..-1]
-       k,v = nt.split('>')
-       v = '' if v.nil?
-       k = k.downcase
-       nkv = k+':'+v
-       thing << nkv
-     end
-     puts thing
-
-     transactions[0]
-     # need to fix so only one transactions
-   end
+    transactions[0]
+    # need to fix so only one transactions
+  end
 
 
   # def self.get_ofx() #(filepath)

@@ -2,11 +2,11 @@ class Split < ApplicationRecord
   belongs_to :account
   belongs_to :entry
   acts_as_tenant(:client)
-  # acts_as_tenant(:entry)
 
   attribute :debit, :integer
   attribute :credit, :integer
   attribute :transfer, :string
+  # attribute :_destroy
 
   validates_associated :account
   validates_associated :entry

@@ -59,11 +59,11 @@
           .box = caption
         thead#sort_header
           tr
-            th.w10.sortable[data-action="click->sortTable#sortBy"]
+            th.w-1/11.sortable[data-action="click->sortTable#sortBy"]
               i.fas.fa-sort.noprint.pointer-events-none
               |Date&nbsp;&nbsp;
               i.fas.fa-edit.pointer-events-none
-              |&nbsp;&nbsp;Dup
+              i.float-right Dup
 
             th.sortable[data-action="click->sortTable#sortBy"]
               i.fas.fa-sort.noprint.nopointer
@@ -71,11 +71,11 @@
             th.w30.sortable[data-action="click->sortTable#sortBy"]
               i.fas.fa-sort.noprint.nopointer
               |Desc
-            th.w15r.sortable[data-action="click->sortTable#sortBy"]
+            th.w15.sortable[data-action="click->sortTable#sortBy"]
               i.fas.fa-sort.noprint.nopointer
               |Account
             th.sortable[data-action="click->sortTable#sortBy"]
-              i.fas.fa-so
+              i
               |R
             th Debits
             th Credits
@@ -88,7 +88,7 @@
                 = link_to(row[:date], edit_entry_path(row[:id]),class:['blue-link'])
                 |&nbsp;&nbsp;
                 = link_to entries_duplicate_path(row[:id]), data: { confirm: 'Duplicate Entry: Are you sure?' } do
-                  i class="fas fa-copy noprint blue-link"
+                  i class="fas float-right fa-copy noprint blue-link"
 
 
               - else

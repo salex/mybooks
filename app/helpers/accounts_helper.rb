@@ -5,46 +5,49 @@ module AccountsHelper
     text ? tag.span(icon_tag + text_tag) : icon_tag
   end
 
-  def text_field_with_border(form,attribute)
-    form.text_field(attribute, class:"border-1 mx-2 m-2")
-  end
+  # # NOT USED
+  # def text_field_with_border(form,attribute)
+  #   form.text_field(attribute, class:"border-1 mx-2 m-2")
+  # end
 
-  def acct_list(root,p=0)
-    if params[:tree].present?
-      return acct_tree(root)
-    end
-    html = content_tag(:div, class: 'pl-row') {
-      ul_contents = ""
-      # ul_contents << content_tag(:div, link_to(root.name,account_checkbooks_path(guid:root.guid)), class:"col-acct p#{p}")
-      ul_contents << content_tag(:div, link_to(root.name,account_path(root)), class:"col-acct p#{p}")
+  # # NOT USED
+  # def acct_list(root,p=0)
+  #   if params[:tree].present?
+  #     return acct_tree(root)
+  #   end
+  #   html = content_tag(:div, class: 'pl-row') {
+  #     ul_contents = ""
+  #     # ul_contents << content_tag(:div, link_to(root.name,account_checkbooks_path(guid:root.guid)), class:"col-acct p#{p}")
+  #     ul_contents << content_tag(:div, link_to(root.name,account_path(root)), class:"col-acct p#{p}")
 
-      ul_contents << content_tag(:div,node_balance(root),class:'pl-col-11')
-      p +=1
-      root.children.each do |child|
-        ul_contents << acct_list(child,p)
-      end
-      p -= 1
-      ul_contents.html_safe
-    }.html_safe
-  end
+  #     ul_contents << content_tag(:div,node_balance(root),class:'pl-col-11')
+  #     p +=1
+  #     root.children.each do |child|
+  #       ul_contents << acct_list(child,p)
+  #     end
+  #     p -= 1
+  #     ul_contents.html_safe
+  #   }.html_safe
+  # end
 
-  def bt_summary(acct)
+  # # NOT USED
+  # def bt_summary(acct)
 
-    book = acct.book
-    tree = book.build_acct_tree(acct)
-    # html = content_tag(:div){
-    #   list = ""
-    #   list << content_tag(:div, link_to(acct.name,"/account/#{acct.id}", 
-    #     class:"blue-link inline-block ml-#{tree[acct.id].level}"))
-    #   list << content_tag(:div,node_balance(acct),
-    #     class:'inline-block text-right float-right')
+  #   book = acct.book
+  #   tree = book.build_acct_tree(acct)
+  #   # html = content_tag(:div){
+  #   #   list = ""
+  #   #   list << content_tag(:div, link_to(acct.name,"/account/#{acct.id}", 
+  #   #     class:"blue-link inline-block ml-#{tree[acct.id].level}"))
+  #   #   list << content_tag(:div,node_balance(acct),
+  #   #     class:'inline-block text-right float-right')
 
-    # }
+  #   # }
      
-    html = content_tag(:div,"got here")
+  #   html = content_tag(:div,"got here")
 
-    html
-  end
+  #   html
+  # end
 
   def summary_list(root,p=0)
     # if params[:tree].present?

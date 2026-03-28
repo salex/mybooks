@@ -220,6 +220,8 @@ class EntriesController < ApplicationController
     def entry_params
       # permit_all_parameters
       params.expect(entry: [ :client_id, :book_id, :numb, :post_date, :description, :fit_id, :lock_version,
-        splits_attributes: [[:id,:action,:memo,:amount,:reconcile_state,:account_id,:debit,:credit,:transfer,s:_destroy]]])
+        splits_attributes: [[:id,:action,:memo,:amount,:reconcile_state,:account_id,:debit,:credit,:transfer,:_destroy]]])
+      # removed         ,s:_destroy]]])
+
     end
 end

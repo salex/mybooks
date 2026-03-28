@@ -13,18 +13,6 @@ class Book < ApplicationRecord
 
   serialize :settings, coder: JSON
 
-  # def tmp_accts
-  #   accts = self.accounts.all.order(:level,:parent_id,:name).as_json(except:[:created_at,:updated_at,:contra,:leafs,:transfer])
-  #   accts.each{|a| 
-  #     a['lan'] = Account.find(a['id']).long_account_name.split(':').reverse.join(":")
-  #     a['lanr'] = a['lan'].split(':').reverse.join(":")
-  #   }
-  # end
-
-  # def bank_transactions_index
-  #   d = (Date.today - 2.years).beginning_of_month
-  # end
-
   def root_acct
     self.accounts.find_by(code:'ROOT',level:0)
   end

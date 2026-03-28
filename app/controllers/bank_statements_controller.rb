@@ -3,7 +3,7 @@ class BankStatementsController < ApplicationController
 
   # GET /bank_statements
   def index
-    @bank_statements = BankStatement.all.order(:statement_date).reverse
+    @bank_statements = Current.book.bank_statements.order(:statement_date).reverse
     session[:bs_id] = nil
   end
 
@@ -15,7 +15,7 @@ class BankStatementsController < ApplicationController
 
   # GET /bank_statements/new
   def new
-    @bank_statement = BankStatement.new(client_id:Current.client.id,book_id:Current.book.id)
+    @bank_statement = Current.book.bank_statement.new(client_id:Current.client.id,book_id:Current.book.id)
   end
 
   # GET /bank_statements/1/edit
@@ -24,7 +24,7 @@ class BankStatementsController < ApplicationController
 
   # POST /bank_statements
   def create
-    @bank_statement = BankStatement.new(bank_statement_params)
+    @bank_statement = Current.book.bank_statement.new(bank_statement_params)
 
     if @bank_statement.save
       redirect_to @bank_statement, notice: "Bank statement was successfully created."
@@ -103,7 +103,7 @@ class BankStatementsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_bank_statement
-      @bank_statement = BankStatement.find(params.expect(:id))
+      @bank_statement = Current.book.bank_statements.find(params.expect(:id))
     end
 
     # Only allow a list of trusted parameters through.

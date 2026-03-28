@@ -1,8 +1,8 @@
 - splits = @entry.splits
 
-.flex.gap-8.print
+.flex.gap-8.print.bg-gray-200.border-1.p-2
   div 
-    button[class="#{btn_sm_blue} m-2"] =  link_to 'Edit', edit_entry_path(@entry)
+    = link_to icon('fas fa-edit',"Edit"),edit_entry_path(@entry),class:"icon bg-blue-600 w-18"
   div
     strong ID:
     = @entry.id

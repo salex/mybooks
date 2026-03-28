@@ -8,7 +8,7 @@ class BankTransactionsController < ApplicationController
     if params[:date].present?
       @bank_transactions = BankTransaction.by_month(params[:date])
     else
-      @bank_transactions = BankTransaction.all
+      @bank_transactions = Current.book.bank_transactions
     end
   end
 

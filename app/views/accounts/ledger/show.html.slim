@@ -12,10 +12,10 @@ div.noprint[data-controller="blueBackground"]
       = render partial:'shared/ledger_pickr'
 
     div
-      - if session[:recent] && session[:recent][@account.id.to_s].present?
-        i.fa.fa-toggle-on = link_to("Toggle Recent Ledger",account_path(@account,toggle: true),class:'blue-link')
-      - else
-        i.fa.fa-toggle-off = link_to("Toggle Recent Ledger",account_path(@account,toggle: true),class:'blue-link')
+      / - if session[:recent] && session[:recent][@account.id.to_s].present?
+      /   i.fa.fa-toggle-on = link_to("Toggle Recent Ledger",account_path(@account,toggle: true),class:'blue-link')
+      / - else
+      /   i.fa.fa-toggle-off = link_to("Toggle Recent Ledger",account_path(@account,toggle: true),class:'blue-link')
     div
       i.fa.fa-toggle-off[data-controller="toggler" data-action="click->toggler#toggleChild" data-childClass="toggleMe"]
         |&nbsp;
