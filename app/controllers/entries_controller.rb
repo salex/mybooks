@@ -138,25 +138,6 @@ class EntriesController < ApplicationController
     splits[0].memo = memo
     splits[0].account_id = account.id
 
-
-    puts "DDDDD #{@entry.splits[0].inspect }"
-    # @entry.splits.build()
-    # splits.amount = 123456
-
-    # 1.upto(3) do |i|
-    #   splits == @entry.splits.build(reconcile_state:'n',account_id: 0, amount:0, debit:0)
-    # end
-    # # puts splits.inspect
-    # puts bt.amount
-    # splits[0].amount = (bt.amount * 100).to_i 
-    # if splits[0].amount < 0
-    #   splits[0].debit = (splits[0].amount * -1) / 100
-    # else
-    #   splits[0].credit = (splits[0].amount / 100)
-    # end
-
-    # puts "WS SP:today #{splits[0].inspect}"
-
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @list }

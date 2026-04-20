@@ -9,13 +9,25 @@ class BankStatementsController < ApplicationController
 
   # GET /bank_statements/1
   def show
-    @bank_transactions = BankTransaction.by_month(@bank_statement.statement_date)
+    @bank_transactions = Current.book.bank_transactions #.by_month(@bank_statement.statement_date)
     session[:bs_id] = @bank_statement.id
+  end
+
+  def show_date
+    # http://localhost:3000/bank_statements/show_date?date=2020-01-01
+    bom = params[:date].to_date.beginning_of_month + 1.day
+    eom = bom.end_of_month + 1.day 
+    # might try to fix reconcile_date at some point
+    @params_date = [bom..eom]
+    @splits = Split.
+      where(reconcile_date:@params_date.last).
+      where(account_id:Current.book.checking_ids)
   end
 
   # GET /bank_statements/new
   def new
-    @bank_statement = Current.book.bank_statement.new(client_id:Current.client.id,book_id:Current.book.id)
+    last_date = Current.book.bank_statements.last.statement_date + 1.month
+    @bank_statement = Current.book.bank_statements.new(client_id:Current.client.id,book_id:Current.book.id,statement_date:last_date,reconciled_date:last_date.end_of_month)
   end
 
   # GET /bank_statements/1/edit
@@ -24,7 +36,7 @@ class BankStatementsController < ApplicationController
 
   # POST /bank_statements
   def create
-    @bank_statement = Current.book.bank_statement.new(bank_statement_params)
+    @bank_statement = Current.book.bank_statements.new(bank_statement_params)
 
     if @bank_statement.save
       redirect_to @bank_statement, notice: "Bank statement was successfully created."
@@ -52,8 +64,6 @@ class BankStatementsController < ApplicationController
   end
 
   def upload_file
-    # puts "ITS IN UPLOAD FILE RB #{params[:file].inspect}"
-    # puts "FILE NAME #{params[:file].original_filename}"
     filename = params[:file].original_filename
     unless filename.include?("Transactions-")
       redirect_to import_bank_transactions_path, alert: "Filenames for this Book must start with `Transactions-`, Reselect file.";return
@@ -71,7 +81,7 @@ class BankStatementsController < ApplicationController
 
   def reconcile
     session[:bs_id] = @bank_statement.id
-    @bank_transactions = BankTransaction.by_month(@bank_statement.statement_date.to_s)
+    @bank_transactions = BankTransaction.all #by_month(@bank_statement.statement_date.to_s)
     if @bank_transactions.blank?
       redirect_to bank_statement_path, alert: 'There are no Bank Transactions for this statement. It has probably been reconciled'
     end

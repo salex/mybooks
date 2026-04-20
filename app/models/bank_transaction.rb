@@ -7,21 +7,20 @@ class BankTransaction < ApplicationRecord
 
   def set_pennies
     self.pennies = (self.amount * 100).round unless self.amount.blank?
+    if self.description.include?("CK # ")
+      # THIS ONLY WORKS FOR SOME CSV FILES
+      # self.check = self.description[5..-1].to_i
+      # more generic version, gets first integers
+      self.check = self.description.scan(/\d+/).first.to_i
+    end
   end
 
   def links
-
-    puts "LINKS HAVE BEE CALLED #{Current.session[:bs_id]}"
-    # this was setup to find an un-reconciled split but for 
-    # test it was set to y. that didn't find the 7 month check
-    # setting it to not y found it.
-    # try not looking for reconciled state
-    # .where.not(reconcile_state:'y')
-    # test Current.book = Book.find 1
-    amt = (self.amount * 100).round(2).to_i
+    # this was setup to find an un-reconciled split amount
+    amt = self.pennies 
     dtime = (Date.today - 12.months).to_time
     @splits = Split.where(account_id:Current.book.checking_ids)
-      .where.not(reconcile_state:'y') #THINK  change to n skip voids
+      .where.not(reconcile_state:'y') 
       .where(amount:amt)
       .where("updated_at > ?", dtime).includes(:entry)
     return @splits
@@ -29,7 +28,7 @@ class BankTransaction < ApplicationRecord
 
 
   def self.by_month(date)
-    puts "DATE CLASSS #{date} #{date.class}"
+    # puts "DATE CLASSS #{date} #{date.class}"
     if date.class == Date
       bom = date
     else
@@ -123,31 +122,4 @@ class BankTransaction < ApplicationRecord
     return banks
   end
   
-  # def self.relink
-  #   # b = Current.book
-  #   b = Book.find 1
-  #   btrans = BankTransaction.where(split_id:nil)
-  #   ck = 0
-  #   dups = 0
-  #   lk = []
-  #   dtime = (Date.today - 24.months).to_time
-  #   btrans.each do |t|
-  #     ck += 1
-  #     amt = (t.amount * 100).round(2).to_i
-  #     splits = Split.where(account_id:b.checking_ids).where(reconcile_state:'y').where(amount:amt).where("updated_at > ?", dtime)
-  #     #.includes(:entry)
-  #     if splits.size == 1
-  #       lk << "trans #{t.id} would be linked to #{splits[0].id} "
-  #     else
-  #       dups += splits.size
-  #     end
-  #   end
-  #   #{}"date_column > ?", some_date)
-  #   puts "TRANS CHECKED #{ck}"
-  #   puts "TRANS LINKED #{lk.size}"
-  #   puts "DUPS #{dups}"
-  #   puts lk
-  # end
-
-
 end

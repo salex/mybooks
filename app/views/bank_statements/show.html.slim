@@ -62,21 +62,21 @@ div.w-full.bg-white.p-2
           div.font-bold 
             p There are no BankTransaction for the BankStatement. It is probably reconciled. Below is a table of Checking splits for the Bank Statement period. 
             p All reconcile date should be the end of the Bank Statement month. That will be fixed in the future.
-          -keys = @bank_statement.entry_splits[0].keys
-          table.classic
-            caption.text-center.font-bold Bank Statement Entries/Splits
-            thead
-              tr
-                - keys.each do |k|
-                  th =  k
-            tbody
-              - @bank_statement.entry_splits.each do |s|
-                tr
-                  - keys.each do |k|
-                    - if s[k].is_a?(String)
-                      td = s[k]
-                    - else
-                      td.text-right = s[k]
+          / -keys = @bank_statement.entry_splits[0].keys
+          / table.classic
+          /   caption.text-center.font-bold Bank Statement Entries/Splits
+          /   thead
+          /     tr
+          /       - keys.each do |k|
+          /         th =  k
+          /   tbody
+          /     - @bank_statement.entry_splits.each do |s|
+          /       tr
+          /         - keys.each do |k|
+          /           - if s[k].is_a?(String)
+          /             td = s[k]
+          /           - else
+          /             td.text-right = s[k]
       - else
         = render @bank_statement
 

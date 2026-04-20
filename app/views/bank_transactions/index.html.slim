@@ -5,7 +5,13 @@ div.w-full.bg-white.p-2
   h1.font-bold.text-2xl Bank Transactions
   = link_to link_to icon('fas fa-plus-square', "New Bank Transaction"), new_bank_transaction_path,class:"btn-primary"
   = link_to link_to icon('fas fa-plus-square', "Import New Bank Transaction"), import_bank_transactions_path,class:"btn-link"
-  div How it works. Transasction are created when a new Bank Statement is created and and CSV file is uploaded. They can be link to a Split and will remain until it is reconciled. 
+  div.flex.gap-8
+    div How it works. Transactions are created when a new Bank Statement is created and a CSV file is uploaded. If a split_id is present, the split is linked.
+    div 
+      span If a purple link icon is present,
+      span.icon.bg-purple-600 = icon('fas fa-link',"")
+      span (Unlinked) clinking on it will search for matches by Amount or check number. If a match is not found you can create a new entry. 
+    div If the transaction is linked it will remain until it is reconciled. The transaction will be deleted when the split is reconciled.
   hr.border-1.border-blue-500.my-1
 
   #-tablebank_transactions
@@ -13,27 +19,23 @@ div.w-full.bg-white.p-2
       thead
         tr
           th Id
-          / th Book
           th Split Id
           th Date
           th Category
           th Description
           th Amount
-          th Check
-          / th Pennies
+          th Check#
           th Actions
 
       - @bank_transactions.each do |bt|
         tr
           td = bt.id
-          / td = bt.book_id
           td = bt.split_id
           td = bt.post_date
           td = bt.category
           td = bt.description
           td.text-right = to_money(bt.pennies)
           td = bt.check
-          / td = bt.pennies
           td.flex
           
             = link_to icon('fas fa-eye',""), bank_transaction_path(bt.id),class:"icon bg-green-600"

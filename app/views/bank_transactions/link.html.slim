@@ -11,10 +11,10 @@ div.w-full.bg-white.p-2
   hr.border-1.border-blue-500.my-1
   div.flex.gap-10
 
-    div.w-4/12
+    div.w-3/12
       div.font-bold Bank Transaction
       div == render @bank_transaction
-    div.w-8/12
+    div.w-9/12
       - if @splits.blank?
         div.font-bold There is no matching split. Below are your options:
         ul
@@ -26,9 +26,6 @@ div.w-full.bg-white.p-2
             tr
               th.bg-green-200.text-right Checking Acct
               td = f.select(:checking,[ "General", "Relief", "Reserve"],class:'')
-            / tr the sign +- of the amount determins cr/db
-            /   th.bg-green-200.text-right Credit/Debit
-            /   td = f.select(:dbcr,[ "Debit", "Credit"],class:'')
             tr
               th.bg-green-200.text-right Memo
               td = f.text_field(:memo,value:@bank_transaction.category,class:'bg-white border-1 p-1')
@@ -55,14 +52,22 @@ div.w-full.bg-white.p-2
           tbody
             - @splits.each do |s|
               tr
-                td = link_to(s.id,split_path(s.id),class:"text-green-600")
+                td 
+                  = link_to(s.id,split_path(s.id),class:"text-green-600")
                 td = s.updated_at.to_date
                 td = s.amount
                 td = s.entry.description[0..30]+'..'
                 td = @bank_transaction.description[0..30]+'..'
                 td = s.entry.numb
-                / td = s.reconcile_date 
-                - unless s.id.blank?
+                - cnumb = s.entry.numb.to_i == @bank_transaction.check 
+                - camt = s.amount == @bank_transaction.pennies
+                - if cnumb && camt
                   td = link_to icon('fas fa-link',""), set_link_bank_transaction_path(split_id:s.id),class:"icon bg-purple-600"
+                - if !cnumb &&  camt
+                  - if @splits.size == 1
+                    td = link_to icon('fas fa-link',""), set_link_bank_transaction_path(split_id:s.id),class:"icon bg-purple-600"
+                  -else
+                    td = link_to icon('fas fa-link',""), set_link_bank_transaction_path(split_id:s.id),class:"icon bg-purple-200"
                 - else
                   td
+

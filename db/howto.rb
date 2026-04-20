@@ -9,4 +9,5 @@ bin/rails generate scaffold Audit client:references book:references date_from:da
 977: sh.as_json
 yaml = YAML.load(Stash.last.yaml)
 json = yaml.as_json.to_json
+kamal app exec -i bash
 

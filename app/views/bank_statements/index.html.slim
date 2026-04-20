@@ -5,11 +5,22 @@ div.w-full.bg-white.p-2
   h1.font-bold.text-2xl Bank Statements
   = link_to link_to icon('fas fa-plus-square', "New Bank Statement"), new_bank_statement_path,class:"btn-primary"
   = link_to link_to icon('fas fa-plus-square', "Import New Bank Transaction"), import_bank_transactions_path,class:"btn-link"
-
+  
   hr.border-1.border-blue-500.my-1
-  div.font-bold.m-4
-    span = "The Bank statements reconcile process has changed. Bank statements have many bank_transactions but the are not initially linked to the statement. " 
-    span = "A check my be outstanding for many months if not cashed.  The linking procedure has changed to look for Splits that match the amount of the bank transaction."
+  div.m-2
+    span.italic = "The Bank Statements reconcile process has changed. Bank Statements have many Bank Transactions, but the are not initially linked to the statement. " 
+    span.italic = "A check my be outstanding for many months if not cashed.  The linking procedure has changed to look for Splits that match the amount of the bank transaction."
+    / div.flex.gap-4
+    div.font-bold.flex.gap-6 
+      div To view old Statements/Transaction use the Year/Month picker.
+      div.flex.gap-4[data-controller="bs"]
+        div.bg-yellow-200
+          = select_year(Date.today, {start_year: 2016, end_year: 2026, include_blank: true},data:{bs_target:'year'})
+          = select_month(0,{use_short_month: true},data:{bs_target:'month'})
+
+        button.bg-green-600.w-18.icon[data-action="click->bs#clickHandler"] = icon('fas fa-eye',"Show")
+
+
   #bank_statements
     table.classic.w-full
       header

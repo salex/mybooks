@@ -24,6 +24,7 @@ Rails.application.routes.draw do
     collection do
       post :upload_file
       get :import
+      get :show_date
     end
 
     member do 

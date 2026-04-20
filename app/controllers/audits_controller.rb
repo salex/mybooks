@@ -14,7 +14,7 @@ class AuditsController < ApplicationController
 
   # GET /audits/new
   def new
-    puts "getting las audit"
+    # puts "getting las audit"
     last_audit = Audit.last
 
 
@@ -23,7 +23,7 @@ class AuditsController < ApplicationController
 
   # GET /audits/1/edit
   def edit
-    puts "IN PLAIN EDIT #{@audit.present?}"
+    # puts "IN PLAIN EDIT #{@audit.present?}"
   end
 
   # POST /audits
@@ -39,9 +39,6 @@ class AuditsController < ApplicationController
 
   # PATCH/PUT /audits/1
   def update
-    # puts " GOTO AUDIT CONTROLLER UPDAE #{audit_params} keys }"
-    # redirect_to @audit, notice: "Audit was successfully updated.", status: :see_other
-
     if @audit.update(audit_params)
       redirect_to @audit, notice: "Audit was successfully updated.", status: :see_other
     else

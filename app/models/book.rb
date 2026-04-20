@@ -34,6 +34,7 @@ class Book < ApplicationRecord
   end
   
   def checking_cleared_splits
+    # NOT USED, LEFT OVER FROM OLDER METHOD?
     Split.where(account_id:self.checking_ids).where(reconcile_state:'c')
   end
 

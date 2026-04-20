@@ -1,0 +1,45 @@
+div[data-controller="blueBackground"]
+div.w-full.bg-white.p-2
+  p style="color: green" = notice
+  h1.font-bold.text-2xl Showing Bank Transactions by Date Range
+  div[class=" px-4 "]
+    div The new version Bank Transactions and Statements were only added in 2024. This implements transaction using Splits and the Reconciled_Date.
+    div There was not a consistent way to set the Reconcile Date. Many are set to the first of the next month.(now set to the last day of the month)
+    div This uses a range from the 2nd of the month to the 1st of the next month. This may then show transactions/splits for two months.
+  div.font-bold.flex.gap-6 
+    div To view old Statements/Transaction use the Year/Month picker.
+    div.flex.gap-4[data-controller="bs"]
+      div.bg-yellow-200
+        = select_year(Date.today, {start_year: 2016, end_year: 2026, include_blank: true},data:{bs_target:'year'})
+        = select_month(0,{use_short_month: true},data:{bs_target:'month'})
+
+      button.bg-green-600.w-18.icon[data-action="click->bs#clickHandler"] = icon('fas fa-eye',"Show")
+  div
+    = @params_date
+  table.classic.w-full
+    thead
+      tr
+        th Entry_id
+        th Date
+        th Description 
+        th CK numb
+        th Amount 
+        th Rstate
+        th Rdate 
+        th Split_id
+    tbody
+      - @splits.each do |s|
+        - entry = s.entry
+        tr
+          td = link_to(entry.id,entry_path(entry.id ),class:'blue-link')
+          td = entry.post_date 
+          td = entry.description
+          td = entry.numb
+          td = s.amount
+          td = s.reconcile_state 
+          td = s.reconcile_date
+          td = s.id 
+
+
+
+             

@@ -39,8 +39,8 @@ class BankTransactionsController < ApplicationController
   def update
 
     if @bank_transaction.update(bank_transaction_params)
-      # redirect_to @bank_transaction, notice: "Bank transaction was successfully updated.", status: :see_other
-      redirect_to bank_statement_path(session[:bs_id]), notice: "Bank transaction was successfully updated.", status: :see_other
+      redirect_to bank_transactions_path, notice: "Bank transaction was successfully updated.", status: :see_other
+      # redirect_to bank_statement_path(session[:bs_id]), notice: "Bank transaction was successfully updated.", status: :see_other
 
     else
       render :edit, status: :unprocessable_entity
@@ -105,51 +105,8 @@ class BankTransactionsController < ApplicationController
     end
     @filename = filename
     @csv = Ledger.csv_text_to_hash(csvfile)
+    $csv_hash = @csv  # for preview
   end
-
-  # def upload_file
-  #   # puts "ITS IN UPLOAD FILE RB #{params[:file].inspect}"
-  #   # puts "FILE NAME #{params[:file].original_filename}"
-  #   filename = params[:file].original_filename
-  #   unless filename.include?("Transactions-")
-  #     redirect_to import_bank_transactions_path, alert: "Filenames for this Book must start with `Transactions-`, Reselect file.";return
-  #   else
-  #     csvfile = params[:file].read
-  #   end
-  #   # headers = csvfile.headers
-  #   if csvfile.bytes[0] == 239
-  #     csvfile = csvfile[3..-1]
-  #   end
-  #   # csv if valid if cr or nl is delimiter
-  #   cr = csvfile.index("\r")
-  #   cr = csvfile.index("\n") if cr.blank?
-  #   cr = cr - 1
-  #   # remove all spaces in a col name
-  #   origheader = csvfile[0..cr].gsub(/\s+/, "")
-
-  #   header = origheader.split(',')
-  #   newhead = []
-  #   # change any date name to just Date
-  #   header.each do |i|
-  #     # puts "HEADER #{i.include?('Debit')} or debit/credit"
-  #     if i.include?('Date') || i.include?('date')
-  #       newhead << 'Date'
-  #     elsif i.include?('Debit') || i.include?('debit')
-  #       # puts "HEADER  i #{i} #{i.include?('Debit')}"
-  #       newhead << 'DebitCredit'
-  #     else
-  #       newhead << i 
-  #     end
-  #   end
-
-  #   newheader = newhead.join(',') 
-  #   csvfile[0..cr] = newheader
-  #   @csv = CSV.parse(csvfile, headers: true, encoding: "utf-8").map(&:to_h)
-  #   $csv_hash = @csv # global variable set
-  #   # puts $csv_hash
-  #   # render :upload_file
-  #   render :upload_file
-  # end
 
   private
     # Use callbacks to share common setup or constraints between actions.

@@ -1,6 +1,7 @@
 class BankStatement < ApplicationRecord
   acts_as_tenant(:client) ### for acts_as-tenant
   belongs_to :book
+  # has_many :bank_transactions
   # serialize :json, coder: JSON
 
   # attribute :results
@@ -14,7 +15,7 @@ class BankStatement < ApplicationRecord
   def transactions
     bom = self.statement_date.beginning_of_month
     eom = bom.end_of_month
-    self.book.bank_transactions.where(post_date:[bom..eom])
+    self.book.bank_transactions #.where(post_date:[bom..eom])
   end
 
   def reconciled_splits
