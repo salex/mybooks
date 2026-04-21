@@ -1,21 +1,18 @@
 class BankStatement < ApplicationRecord
   acts_as_tenant(:client) ### for acts_as-tenant
   belongs_to :book
-  # has_many :bank_transactions
-  # serialize :json, coder: JSON
 
-  # attribute :results
-
-  # todo this may need to be changed to get all transactions 
+  # todo this may need to be changed (IT WAS!)to get all transactions 
   # not reconciled. still think on process
   # should be something like
   # create transactions when uploaded
   # remove when reconciled
   # would contain check that are not cleared for a while
   def transactions
-    bom = self.statement_date.beginning_of_month
-    eom = bom.end_of_month
-    self.book.bank_transactions #.where(post_date:[bom..eom])
+    # bom = self.statement_date.beginning_of_month
+    # eom = bom.end_of_month
+    self.book.bank_transactions 
+    #.where(post_date:[bom..eom])
   end
 
   def reconciled_splits
@@ -90,7 +87,7 @@ class BankStatement < ApplicationRecord
     splits.sort_by!{|h| h[:date]}
   end
 
-  # MOVED TO INHERITED MODEL bank_ofx.rb
+  # MOVED TO INHERITED MODEL bank_ofx.rb OFX NOT used any mor
   # this is hardwired test to see if i want to allow ofx and csv
   def get_transactions
     ofx = parse_ofx
@@ -115,7 +112,6 @@ class BankStatement < ApplicationRecord
     results[:stmnt_from] = stmnt_from
     results[:stmnt_to] = stmnt_to
     results[:balance] = balance
-
 
     tran_start = ofx.index("<BANKTRANLIST>")
     tran_end = ofx.index("</BANKTRANLIST>") -13
@@ -157,6 +153,5 @@ class BankStatement < ApplicationRecord
     end
     bt = Hash[trans]
   end
-
 
 end

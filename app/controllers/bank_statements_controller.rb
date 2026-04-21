@@ -70,8 +70,6 @@ class BankStatementsController < ApplicationController
     else
       csvfile = params[:file].read
     end
-    # headers = csvfile.headers
-    # csvfile = params[:file].read
     if csvfile.bytes[0] == 239
       csvfile = csvfile[3..-1]
     end
@@ -88,15 +86,13 @@ class BankStatementsController < ApplicationController
   end
 
   def reconciled
-    # puts "PARAMS INSPECT #{params}"
     bt = BankTransaction.find(params[:ids])
     bt.each do |t|
-      # puts t.inspect
       split = Split.find(t[:split_id])
       # this is a kludge that accounts for splits that have be reconciled
       # using old reconcile. It should be last day of month
-      # thing on how to fix it for past, should work in future
-      # bankstatement date is the 1st of the next month
+      # thinking on how to fix it for past, should work in future
+      # bank statement date is the 1st of the next month
       if split.reconcile_state != 'y'
         split.reconcile_state = 'y'
         split.reconcile_date = @bank_statement.statement_date.end_of_month
@@ -105,7 +101,6 @@ class BankStatementsController < ApplicationController
       else
         t.delete
       end
-      # puts split.inspect
     end
     redirect_to @bank_statement, notice: "Bank statement was successfully reconciled.", status: :see_other
   end
@@ -118,7 +113,6 @@ class BankStatementsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def bank_statement_params
-      # params.require(:model).permit(ids: [])
       params.expect(bank_statement: [ :client_id, :book_id, :statement_date, :beginning_balance, :ending_balance, :summary, :reconciled_date, :json ])
     end
 end

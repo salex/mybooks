@@ -40,8 +40,6 @@ class BankTransactionsController < ApplicationController
 
     if @bank_transaction.update(bank_transaction_params)
       redirect_to bank_transactions_path, notice: "Bank transaction was successfully updated.", status: :see_other
-      # redirect_to bank_statement_path(session[:bs_id]), notice: "Bank transaction was successfully updated.", status: :see_other
-
     else
       render :edit, status: :unprocessable_entity
     end
@@ -70,9 +68,6 @@ class BankTransactionsController < ApplicationController
   # end
 
   def set_link
-    # puts "SET LINK PARAMS BSID #{session[:bs_id]} P #{params.inspect}"
-
-    # shit = crap
     @bank_transaction.split_id = params[:split_id]
     flash.now[:alert] = "#{session[:bs_id]} - You have requested to link a Bank Transaction to the selected Split. Update to confirm or Cancel"
     render :edit
@@ -90,16 +85,12 @@ class BankTransactionsController < ApplicationController
   end
 
   def upload_file
-    # puts "ITS IN UPLOAD FILE RB #{params[:file].inspect}"
-    # puts "FILE NAME #{params[:file].original_filename}"
     filename = params[:file].original_filename
     unless filename.include?("Transactions-")
       redirect_to import_bank_transactions_path, alert: "Filenames for this Book must start with `Transactions-`, Reselect file.";return
     else
       csvfile = params[:file].read
     end
-    # headers = csvfile.headers
-    # csvfile = params[:file].read
     if csvfile.bytes[0] == 239
       csvfile = csvfile[3..-1]
     end

@@ -11,7 +11,6 @@ div.w-full.bg-white.p-2
   hr.border-1.border-blue-500.my-1
   div
     span = "Filename:  #{@filename}"
-  / - @csv = Ledger.csv_text_to_hash(@csv)
   table.classic.w-full
     / e.g Date  Type  Description Category  Amount  Balance Note
     - header_keys = @csv[0].keys
